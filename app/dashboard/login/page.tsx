@@ -42,7 +42,7 @@ export default function Login(){
                         "Login Successful",
                         response.data
                     );
-                 router.push("/dashboard");
+                 router.push("/dashboard/profile");
 
                 console.log("Login Successful  ",response.data);
 
