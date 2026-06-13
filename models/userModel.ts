@@ -1,25 +1,22 @@
 import mongoose from "mongoose";
-import { unique } from "next/dist/build/utils";
-import { createValidationSampleTracking } from "next/dist/server/app-render/instant-validation/instant-samples";
-import { StagedRenderingController } from "next/dist/server/app-render/staged-rendering";
 
 const userSchema = new mongoose.Schema({
     firstname:{
         type:String,
-        require:[true,"Please provide first name "]
+        required:[true,"Please provide first name "]
     },
-        Lastname:{
+    lastname:{
         type:String,
-        require:[true,"Please provide Last name "]
+        required:[true,"Please provide Last name "]
     },
-        email:{
+    email:{
         type:String,
-        require:[true,"Please provide email "],
+        required:[true,"Please provide email "],
         unique:true
     },
-        password:{
+    password:{
         type:String,
-        require:[true,"Please provide password "]
+        required:[true,"Please provide password "]
     },
     isVerified:{
         type:Boolean,
@@ -33,12 +30,6 @@ const userSchema = new mongoose.Schema({
     forgotPasswordTokenExpiry:Date,
     verifyToken:String ,
     verifyTokenExpiry:Date
-
-
-
-  
-
-
 });
 
 const User =mongoose.models.users|| mongoose.model("users", userSchema);

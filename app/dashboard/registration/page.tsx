@@ -1,191 +1,318 @@
 "use client"
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
-export default  function Registration(){
-    const router=useRouter();
-    
+export default function Registration() {
+    const router = useRouter();
 
-     const [user ,setUser]=React.useState({
-            firstname:"",
-            lastname:"",
-            email:"",
-            password:"",
-            repassword:""
+    const [user, setUser] = React.useState({
+        firstname: "",
+        lastname: "",
+        email: "",
+        password: "",
+        repassword: ""
+    });
 
-     });
+    const [errors, setErrors] = React.useState({
+        firstname: "",
+        lastname: "",
+        email: "",
+        password: "",
+        repassword: ""
+    });
 
+    const [apiError, setApiError] = React.useState("");
+    const [loading, setLoading] = React.useState(false);
 
-     const [buttonDisabled, setButtonDisabled]= React.useState(false);
-     const [loading,setLoading]=React.useState(false);
-     
-     
-     const onSignUp = async ()=>{
+    const onSignUp = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setApiError("");
+        setErrors({
+            firstname: "",
+            lastname: "",
+            email: "",
+            password: "",
+            repassword: ""
+        });
 
-        try{
-           setLoading(true);
-          const respons=await axios.post("/api/users/signup",user);
-          console.log(respons.data);
-          router.push("/dashboard/login");
+        let hasError = false;
+        const newErrors = {
+            firstname: "",
+            lastname: "",
+            email: "",
+            password: "",
+            repassword: ""
+        };
 
-        }catch(error:any){
-                console.log("signup fail",error.message);
-        }finally{
+        const firstnameTrim = user.firstname.trim();
+        const lastnameTrim = user.lastname.trim();
+        const emailTrim = user.email.trim();
+        const passwordTrim = user.password.trim();
+        const repasswordTrim = user.repassword.trim();
+
+        if (!firstnameTrim) {
+            newErrors.firstname = "First name is required";
+            hasError = true;
+        } else if (firstnameTrim.length < 2) {
+            newErrors.firstname = "First name must be at least 2 characters";
+            hasError = true;
+        }
+
+        if (!lastnameTrim) {
+            newErrors.lastname = "Last name is required";
+            hasError = true;
+        } else if (lastnameTrim.length < 2) {
+            newErrors.lastname = "Last name must be at least 2 characters";
+            hasError = true;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailTrim) {
+            newErrors.email = "Email address is required";
+            hasError = true;
+        } else if (!emailRegex.test(emailTrim)) {
+            newErrors.email = "Please enter a valid email address";
+            hasError = true;
+        }
+
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
+        if (!passwordTrim) {
+            newErrors.password = "Password is required";
+            hasError = true;
+        } else if (passwordTrim.length < 6) {
+            newErrors.password = "Password must be at least 6 characters";
+            hasError = true;
+        } else if (!passwordRegex.test(passwordTrim)) {
+            newErrors.password = "Password must contain uppercase, lowercase, and a number";
+            hasError = true;
+        }
+
+        if (!repasswordTrim) {
+            newErrors.repassword = "Confirm password is required";
+            hasError = true;
+        } else if (repasswordTrim !== passwordTrim) {
+            newErrors.repassword = "Passwords do not match";
+            hasError = true;
+        }
+
+        if (hasError) {
+            setErrors(newErrors);
+            return;
+        }
+
+        try {
+            setLoading(true);
+            const response = await axios.post("/api/users/signup", {
+                firstname: firstnameTrim,
+                lastname: lastnameTrim,
+                email: emailTrim,
+                password: passwordTrim
+            });
+            console.log("Signup Successful", response.data);
+            router.push("/dashboard/login");
+        } catch (error: any) {
+            const errorMsg = error.response?.data?.error || error.message || "An unexpected error occurred during signup.";
+            setApiError(errorMsg);
+            console.error("Signup failed:", errorMsg);
+        } finally {
             setLoading(false);
         }
-     
-   }
+    };
 
+    return (
+        <div className="container mx-auto px-4 py-10">
+            <div className="max-w-5xl mx-auto bg-white shadow-xl rounded-2xl overflow-hidden">
+                <div className="flex flex-col lg:flex-row min-h-[700px]">
 
-   useEffect(()=>{
-      if (user.email.length> 0 && user.firstname.length>0 && user.lastname.length>0 && user.password.length>0 ) {
-           setButtonDisabled(false);
-      }else{
-        setButtonDisabled(true);
-      }
-   },[user]);
+                    {/* Left Image Section */}
+                    <div className="hidden lg:block lg:w-1/2 bg-gray-100">
+                        <div className="h-full w-full bg-cover bg-center bg-register-image"></div>
+                    </div>
 
+                    {/* Right Form Section */}
+                    <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
+                        <div className="w-full max-w-md">
 
-    return(
-<div className="container mx-auto px-4 py-10">
-  <div className="max-w-5xl mx-auto bg-white shadow-xl rounded-2xl overflow-hidden">
-    
-    <div className="flex flex-col lg:flex-row min-h-[700px]">
+                            <div className="text-center mb-8">
+                                <h1 className="text-3xl font-bold text-gray-900">
+                                    {loading ? "Loading..." : "Create an Account!"}
+                                </h1>
+                            </div>
 
-      {/* Left Image Section */}
-      <div className="hidden lg:block lg:w-1/2 bg-gray-100">
-        <div className="h-full w-full bg-cover bg-center bg-register-image"></div>
-      </div>
+                            {apiError && (
+                                <div className="mb-4 p-3 rounded-lg bg-red-100 border border-red-200 text-red-700 text-sm">
+                                    {apiError}
+                                </div>
+                            )}
 
-      {/* Right Form Section */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
-        <div className="w-full max-w-md">
+                            <form onSubmit={onSignUp} className="space-y-4">
 
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-900">
-                 {loading?"loading....":"Create an Account!"}
-            </h1>
-          </div>
+                                {/* Name Fields */}
+                                <div className="flex flex-col lg:flex-row gap-4">
+                                    <div className="w-full">
+                                        <input
+                                            type="text"
+                                            id="FirstName"
+                                            placeholder="First Name"
+                                            className={`w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                                                errors.firstname ? "border-red-500 focus:ring-red-500" : "border-gray-300"
+                                            }`}
+                                            value={user.firstname}
+                                            onChange={(e) => {
+                                                setUser({ ...user, firstname: e.target.value });
+                                                setErrors({ ...errors, firstname: "" });
+                                                setApiError("");
+                                            }}
+                                        />
+                                        {errors.firstname && (
+                                            <p className="text-red-500 text-xs mt-1">{errors.firstname}</p>
+                                        )}
+                                    </div>
 
-          <form className="space-y-4">
+                                    <div className="w-full">
+                                        <input
+                                            type="text"
+                                            id="LastName"
+                                            placeholder="Last Name"
+                                            className={`w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                                                errors.lastname ? "border-red-500 focus:ring-red-500" : "border-gray-300"
+                                            }`}
+                                            value={user.lastname}
+                                            onChange={(e) => {
+                                                setUser({ ...user, lastname: e.target.value });
+                                                setErrors({ ...errors, lastname: "" });
+                                                setApiError("");
+                                            }}
+                                        />
+                                        {errors.lastname && (
+                                            <p className="text-red-500 text-xs mt-1">{errors.lastname}</p>
+                                        )}
+                                    </div>
+                                </div>
 
-            {/* Name Fields */}
-            <div className="flex flex-col lg:flex-row gap-4">
-              <input
-                type="text"
-                id="FirstName"
-                placeholder="First Name"
-                className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={user.firstname}
-                onChange={(e) =>
-                  setUser({ ...user, firstname: e.target.value})
-                }
-              />
+                                {/* Email */}
+                                <div>
+                                    <input
+                                        type="email"
+                                        id="InputEmail"
+                                        placeholder="Email Address"
+                                        className={`w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                                            errors.email ? "border-red-500 focus:ring-red-500" : "border-gray-300"
+                                        }`}
+                                        value={user.email}
+                                        onChange={(e) => {
+                                            setUser({ ...user, email: e.target.value });
+                                            setErrors({ ...errors, email: "" });
+                                            setApiError("");
+                                        }}
+                                    />
+                                    {errors.email && (
+                                        <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+                                    )}
+                                </div>
 
-              <input
-                type="text"
-                id="LastName"
-                placeholder="Last Name"
-                className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={user.lastname}
-                onChange={(e) =>
-                  setUser({ ...user, lastname: e.target.value })
-                }
-              />
+                                {/* Password Fields */}
+                                <div className="flex flex-col lg:flex-row gap-4">
+                                    <div className="w-full">
+                                        <input
+                                            type="password"
+                                            id="InputPassword"
+                                            placeholder="Password"
+                                            className={`w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                                                errors.password ? "border-red-500 focus:ring-red-500" : "border-gray-300"
+                                            }`}
+                                            value={user.password}
+                                            onChange={(e) => {
+                                                setUser({ ...user, password: e.target.value });
+                                                setErrors({ ...errors, password: "" });
+                                                setApiError("");
+                                            }}
+                                        />
+                                        {errors.password && (
+                                            <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+                                        )}
+                                    </div>
+
+                                    <div className="w-full">
+                                        <input
+                                            type="password"
+                                            id="RepeatPassword"
+                                            placeholder="Repeat Password"
+                                            className={`w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                                                errors.repassword ? "border-red-500 focus:ring-red-500" : "border-gray-300"
+                                            }`}
+                                            value={user.repassword}
+                                            onChange={(e) => {
+                                                setUser({ ...user, repassword: e.target.value });
+                                                setErrors({ ...errors, repassword: "" });
+                                                setApiError("");
+                                            }}
+                                        />
+                                        {errors.repassword && (
+                                            <p className="text-red-500 text-xs mt-1">{errors.repassword}</p>
+                                        )}
+                                    </div>
+                                </div>
+
+                                {/* Register Button */}
+                                <button
+                                    type="submit"
+                                    disabled={loading}
+                                    className={`w-full text-white py-3 rounded-lg transition duration-200 cursor-pointer ${
+                                        loading
+                                            ? "bg-gray-400 cursor-not-allowed"
+                                            : "bg-blue-600 hover:bg-blue-700"
+                                    }`}
+                                >
+                                    {loading ? "Registering..." : "Register Account"}
+                                </button>
+
+                                <hr className="my-6" />
+
+                                {/* Google Button */}
+                                <button
+                                    type="button"
+                                    className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg flex items-center justify-center transition duration-200"
+                                >
+                                    Register with Google
+                                </button>
+
+                                {/* Facebook Button */}
+                                <button
+                                    type="button"
+                                    className="w-full bg-blue-800 hover:bg-blue-900 text-white py-3 rounded-lg flex items-center justify-center transition duration-200"
+                                >
+                                    Register with Facebook
+                                </button>
+                            </form>
+
+                            <hr className="my-6" />
+
+                            {/* Footer Links */}
+                            <div className="text-center mb-2">
+                                <a
+                                    href="/forgot-password"
+                                    className="text-sm text-blue-500 hover:underline"
+                                >
+                                    Forgot Password?
+                                </a>
+                            </div>
+
+                            <div className="text-center">
+                                <Link
+                                    href="/dashboard/login"
+                                    className="text-sm text-blue-500 hover:underline"
+                                >
+                                    Already have an account? Login!
+                                </Link>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            {/* Email */}
-            <input
-              type="email"
-              id="InputEmail"
-              placeholder="Email Address"
-              className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={user.email}
-              onChange={(e) =>
-                setUser({ ...user, email: e.target.value })
-              }
-            />
-
-            {/* Password Fields */}
-            <div className="flex flex-col lg:flex-row gap-4">
-              <input
-                type="password"
-                id="InputPassword"
-                placeholder="Password"
-                className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={user.password}
-                onChange={(e) =>
-                  setUser({ ...user, password: e.target.value })
-                }
-              />
-
-              <input
-                type="password"
-                id="RepeatPassword"
-                placeholder="Repeat Password"
-                className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={user.repassword}
-                onChange={(e) =>
-                  setUser({ ...user, repassword: e.target.value })
-                }
-              />
-            </div>
-
-            {/* Register Button */}
-            <button
-              type="button"
-              onClick={onSignUp}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg transition duration-200"
-            >
-              {buttonDisabled?" No Register Account":"Register Account"} 
-            </button>
-
-            <hr className="my-6" />
-
-            {/* Google Button */}
-            <button
-              type="button"
-              className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg flex items-center justify-center transition duration-200"
-            >
-              Register with Google
-            </button>
-
-            {/* Facebook Button */}
-            <button
-              type="button"
-              className="w-full bg-blue-800 hover:bg-blue-900 text-white py-3 rounded-lg flex items-center justify-center transition duration-200"
-            >
-              Register with Facebook
-            </button>
-          </form>
-
-          <hr className="my-6" />
-
-          {/* Footer Links */}
-          <div className="text-center mb-2">
-            <a
-              href="/forgot-password"
-              className="text-sm text-blue-500 hover:underline"
-            >
-              Forgot Password?
-            </a>
-          </div>
-
-          <div className="text-center">
-            <Link
-              href="/dashboard/login"
-              className="text-sm text-blue-500 hover:underline"
-            >
-              Already have an account? Login!
-            </Link>
-          </div>
-
         </div>
-      </div>
-    </div>
-  </div>
-</div>
     );
 }
