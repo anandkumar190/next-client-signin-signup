@@ -203,6 +203,9 @@ export default function AboutManager() {
                                 className="w-full px-4 py-2 border border-gray-200 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-gray-950/10 focus:border-gray-900"
                                 placeholder="Built on Experience..."
                             />
+                            <p className="text-[10px] text-gray-400 mt-1">
+                                Use the pipe operator <code>|</code> to split colors. Text after <code>|</code> renders in dynamic italicized accent color. Use <code>\n</code> for line breaks (e.g. <code>Built on Experience. \n| Driven by Craft.</code>).
+                            </p>
                         </div>
                     </div>
 

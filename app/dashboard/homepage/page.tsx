@@ -153,6 +153,9 @@ export default function HomepageManager() {
                                 className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-950/10 focus:border-gray-900 text-sm font-medium"
                                 placeholder="We Engineer Environments"
                             />
+                            <p className="text-[10px] text-gray-400 mt-1">
+                                Use the pipe operator <code>|</code> to split colors. Text after <code>|</code> renders in dynamic accent color. Use <code>\n</code> for line breaks (e.g. <code>We Engineer \n| Environments.</code>).
+                            </p>
                         </div>
 
                         <div>
