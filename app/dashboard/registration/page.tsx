@@ -156,7 +156,7 @@ export default function Registration() {
                                             type="text"
                                             id="FirstName"
                                             placeholder="First Name"
-                                            className={`w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                                            className={`w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-gray-900 ${
                                                 errors.firstname ? "border-red-500 focus:ring-red-500" : "border-gray-300"
                                             }`}
                                             value={user.firstname}
@@ -176,7 +176,7 @@ export default function Registration() {
                                             type="text"
                                             id="LastName"
                                             placeholder="Last Name"
-                                            className={`w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                                            className={`w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-gray-900 ${
                                                 errors.lastname ? "border-red-500 focus:ring-red-500" : "border-gray-300"
                                             }`}
                                             value={user.lastname}
@@ -198,7 +198,7 @@ export default function Registration() {
                                         type="email"
                                         id="InputEmail"
                                         placeholder="Email Address"
-                                        className={`w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                                        className={`w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-gray-900 ${
                                             errors.email ? "border-red-500 focus:ring-red-500" : "border-gray-300"
                                         }`}
                                         value={user.email}
@@ -220,7 +220,7 @@ export default function Registration() {
                                             type="password"
                                             id="InputPassword"
                                             placeholder="Password"
-                                            className={`w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                                            className={`w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-gray-900 ${
                                                 errors.password ? "border-red-500 focus:ring-red-500" : "border-gray-300"
                                             }`}
                                             value={user.password}
@@ -240,7 +240,7 @@ export default function Registration() {
                                             type="password"
                                             id="RepeatPassword"
                                             placeholder="Repeat Password"
-                                            className={`w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                                            className={`w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-gray-900 ${
                                                 errors.repassword ? "border-red-500 focus:ring-red-500" : "border-gray-300"
                                             }`}
                                             value={user.repassword}
@@ -260,21 +260,21 @@ export default function Registration() {
                                 <button
                                     type="submit"
                                     disabled={loading}
-                                    className={`w-full text-white py-3 rounded-lg transition duration-200 cursor-pointer ${
+                                    className={`w-full text-white py-3 rounded-lg font-semibold transition duration-200 cursor-pointer ${
                                         loading
                                             ? "bg-gray-400 cursor-not-allowed"
-                                            : "bg-blue-600 hover:bg-blue-700"
+                                            : "bg-gray-900 hover:bg-black"
                                     }`}
                                 >
                                     {loading ? "Registering..." : "Register Account"}
                                 </button>
 
-                                <hr className="my-6" />
+                                <hr className="my-6 border-gray-200" />
 
                                 {/* Google Button */}
                                 <button
                                     type="button"
-                                    className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg flex items-center justify-center transition duration-200"
+                                    className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg flex items-center justify-center transition duration-200"
                                 >
                                     Register with Google
                                 </button>
@@ -282,19 +282,19 @@ export default function Registration() {
                                 {/* Facebook Button */}
                                 <button
                                     type="button"
-                                    className="w-full bg-blue-800 hover:bg-blue-900 text-white py-3 rounded-lg flex items-center justify-center transition duration-200"
+                                    className="w-full bg-slate-800 hover:bg-slate-900 text-white font-semibold py-3 rounded-lg flex items-center justify-center transition duration-200"
                                 >
                                     Register with Facebook
                                 </button>
                             </form>
 
-                            <hr className="my-6" />
+                            <hr className="my-6 border-gray-200" />
 
                             {/* Footer Links */}
                             <div className="text-center mb-2">
                                 <a
                                     href="/forgot-password"
-                                    className="text-sm text-blue-500 hover:underline"
+                                    className="text-sm text-gray-600 hover:text-gray-900 hover:underline"
                                 >
                                     Forgot Password?
                                 </a>
@@ -303,7 +303,7 @@ export default function Registration() {
                             <div className="text-center">
                                 <Link
                                     href="/dashboard/login"
-                                    className="text-sm text-blue-500 hover:underline"
+                                    className="text-sm text-gray-600 hover:text-gray-900 hover:underline"
                                 >
                                     Already have an account? Login!
                                 </Link>

@@ -37,7 +37,7 @@ export default function Profile() {
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-[300px]">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-800"></div>
             </div>
         );
     }
@@ -71,7 +71,7 @@ export default function Profile() {
                 
                 {/* Left Card: Avatar and Details */}
                 <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 text-center flex flex-col items-center">
-                    <div className="h-24 w-24 rounded-full bg-blue-100 border-2 border-blue-200 flex items-center justify-center text-blue-700 font-bold text-3xl shadow-sm mb-4">
+                    <div className="h-24 w-24 rounded-full bg-gray-100 border-2 border-gray-200 flex items-center justify-center text-gray-800 font-bold text-3xl shadow-sm mb-4">
                         {user ? `${user.firstname[0]}${user.lastname[0]}`.toUpperCase() : "U"}
                     </div>
                     <h3 className="font-bold text-gray-800 text-lg">
@@ -82,7 +82,7 @@ export default function Profile() {
                     <div className="mt-4 px-3 py-1 bg-green-50 border border-green-200 text-green-700 text-[10px] uppercase font-extrabold tracking-wider rounded-full">
                         Secure Connection Active
                     </div>
-
+ 
                     <div className="border-t border-gray-100 w-full my-6"></div>
 
                     <button 
@@ -96,7 +96,7 @@ export default function Profile() {
                 {/* Right Card: Details Form */}
                 <div className="bg-white rounded-xl border border-gray-200 shadow-sm lg:col-span-2 overflow-hidden">
                     <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
-                        <h6 className="font-bold text-blue-600 text-sm">Account Information</h6>
+                        <h6 className="font-bold text-gray-900 text-sm">Account Information</h6>
                     </div>
                     <div className="p-6 space-y-4">
                         

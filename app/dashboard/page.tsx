@@ -8,7 +8,7 @@ export default function Dashboard() {
             {/* Page Header */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 tracking-tight">Dashboard</h1>
-                <button className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow transition-colors active:scale-[0.99] cursor-pointer">
+                <button className="inline-flex items-center gap-2 bg-gray-900 hover:bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold shadow transition-colors active:scale-[0.99] cursor-pointer">
                     <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                     </svg>
@@ -20,9 +20,9 @@ export default function Dashboard() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 
                 {/* Earnings (Monthly) */}
-                <div className="bg-white rounded-xl shadow-sm border-l-4 border-blue-600 p-6 flex items-center justify-between hover:shadow-md transition">
+                <div className="bg-white rounded-xl shadow-sm border-l-4 border-gray-900 p-6 flex items-center justify-between hover:shadow-md transition">
                     <div>
-                        <span className="text-xs font-bold text-blue-600 uppercase tracking-wider block mb-1">Earnings (Monthly)</span>
+                        <span className="text-xs font-bold text-gray-800 uppercase tracking-wider block mb-1">Earnings (Monthly)</span>
                         <span className="text-xl font-bold text-gray-800">$40,000</span>
                     </div>
                     <div className="text-gray-300">
@@ -33,9 +33,9 @@ export default function Dashboard() {
                 </div>
 
                 {/* Earnings (Annual) */}
-                <div className="bg-white rounded-xl shadow-sm border-l-4 border-green-500 p-6 flex items-center justify-between hover:shadow-md transition">
+                <div className="bg-white rounded-xl shadow-sm border-l-4 border-green-600 p-6 flex items-center justify-between hover:shadow-md transition">
                     <div>
-                        <span className="text-xs font-bold text-green-500 uppercase tracking-wider block mb-1">Earnings (Annual)</span>
+                        <span className="text-xs font-bold text-green-600 uppercase tracking-wider block mb-1">Earnings (Annual)</span>
                         <span className="text-xl font-bold text-gray-800">$215,000</span>
                     </div>
                     <div className="text-gray-300">
@@ -46,10 +46,10 @@ export default function Dashboard() {
                 </div>
 
                 {/* Tasks */}
-                <div className="bg-white rounded-xl shadow-sm border-l-4 border-cyan-500 p-6 hover:shadow-md transition">
+                <div className="bg-white rounded-xl shadow-sm border-l-4 border-gray-600 p-6 hover:shadow-md transition">
                     <div className="flex items-center justify-between mb-3">
                         <div>
-                            <span className="text-xs font-bold text-cyan-500 uppercase tracking-wider block">Tasks</span>
+                            <span className="text-xs font-bold text-gray-600 uppercase tracking-wider block">Tasks Completed</span>
                             <span className="text-xl font-bold text-gray-800">50%</span>
                         </div>
                         <div className="text-gray-300">
@@ -59,14 +59,14 @@ export default function Dashboard() {
                         </div>
                     </div>
                     <div className="w-full bg-gray-100 rounded-full h-2">
-                        <div className="bg-cyan-500 h-2 rounded-full" style={{ width: "50%" }}></div>
+                        <div className="bg-gray-600 h-2 rounded-full" style={{ width: "50%" }}></div>
                     </div>
                 </div>
 
                 {/* Pending Requests */}
-                <div className="bg-white rounded-xl shadow-sm border-l-4 border-yellow-500 p-6 flex items-center justify-between hover:shadow-md transition">
+                <div className="bg-white rounded-xl shadow-sm border-l-4 border-yellow-600 p-6 flex items-center justify-between hover:shadow-md transition">
                     <div>
-                        <span className="text-xs font-bold text-yellow-500 uppercase tracking-wider block mb-1">Pending Requests</span>
+                        <span className="text-xs font-bold text-yellow-600 uppercase tracking-wider block mb-1">Pending Requests</span>
                         <span className="text-xl font-bold text-gray-800">18</span>
                     </div>
                     <div className="text-gray-300">
@@ -84,7 +84,7 @@ export default function Dashboard() {
                 {/* Earnings Overview */}
                 <div className="bg-white rounded-xl border border-gray-200 shadow-sm lg:col-span-2 overflow-hidden flex flex-col">
                     <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
-                        <h6 className="font-bold text-blue-600 text-sm">Earnings Overview</h6>
+                        <h6 className="font-bold text-gray-900 text-sm">Earnings Overview</h6>
                     </div>
                     <div className="p-6 flex-1 flex flex-col justify-between min-h-[300px]">
                         {/* Mock Line Graph visual */}
@@ -99,7 +99,7 @@ export default function Dashboard() {
                                 <path 
                                     d="M 0,90 Q 20,40 40,60 T 80,20 T 100,5" 
                                     fill="none" 
-                                    stroke="#4e73df" 
+                                    stroke="#111827" 
                                     strokeWidth="3"
                                     strokeLinecap="round"
                                 />
@@ -110,7 +110,7 @@ export default function Dashboard() {
                                 />
                                 <defs>
                                     <linearGradient id="earningsGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                                        <stop offset="0%" stopColor="#4e73df" />
+                                        <stop offset="0%" stopColor="#111827" />
                                         <stop offset="100%" stopColor="#ffffff" />
                                     </linearGradient>
                                 </defs>
@@ -130,16 +130,16 @@ export default function Dashboard() {
                 {/* Revenue Sources */}
                 <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden flex flex-col">
                     <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
-                        <h6 className="font-bold text-blue-600 text-sm">Revenue Sources</h6>
+                        <h6 className="font-bold text-gray-900 text-sm">Revenue Sources</h6>
                     </div>
                     <div className="p-6 flex-1 flex flex-col justify-center items-center min-h-[300px]">
                         {/* Mock Donut Chart */}
                         <div className="relative h-40 w-40 flex items-center justify-center">
                             <svg className="h-full w-full rotate-[-90deg]" viewBox="0 0 36 36">
                                 <circle cx="18" cy="18" r="15.915" fill="none" stroke="#eaecf4" strokeWidth="3" />
-                                <circle cx="18" cy="18" r="15.915" fill="none" stroke="#4e73df" strokeWidth="3" strokeDasharray="55 45" strokeDashoffset="0" />
-                                <circle cx="18" cy="18" r="15.915" fill="none" stroke="#1cc88a" strokeWidth="3" strokeDasharray="30 70" strokeDashoffset="-55" />
-                                <circle cx="18" cy="18" r="15.915" fill="none" stroke="#36b9cc" strokeWidth="3" strokeDasharray="15 85" strokeDashoffset="-85" />
+                                <circle cx="18" cy="18" r="15.915" fill="none" stroke="#111827" strokeWidth="3" strokeDasharray="55 45" strokeDashoffset="0" />
+                                <circle cx="18" cy="18" r="15.915" fill="none" stroke="#10b981" strokeWidth="3" strokeDasharray="30 70" strokeDashoffset="-55" />
+                                <circle cx="18" cy="18" r="15.915" fill="none" stroke="#6b7280" strokeWidth="3" strokeDasharray="15 85" strokeDashoffset="-85" />
                             </svg>
                             <div className="absolute flex flex-col items-center justify-center">
                                 <span className="text-xl font-bold text-gray-800">55%</span>
@@ -148,7 +148,7 @@ export default function Dashboard() {
                         </div>
                         <div className="flex gap-4 justify-center mt-6 text-xs font-semibold text-gray-600 w-full">
                             <span className="flex items-center gap-1.5">
-                                <span className="h-2 w-2 rounded-full bg-blue-600 block"></span>
+                                <span className="h-2 w-2 rounded-full bg-gray-900 block"></span>
                                 Direct
                             </span>
                             <span className="flex items-center gap-1.5">
@@ -156,7 +156,7 @@ export default function Dashboard() {
                                 Social
                             </span>
                             <span className="flex items-center gap-1.5">
-                                <span className="h-2 w-2 rounded-full bg-cyan-500 block"></span>
+                                <span className="h-2 w-2 rounded-full bg-gray-400 block"></span>
                                 Referral
                             </span>
                         </div>
@@ -171,7 +171,7 @@ export default function Dashboard() {
                 {/* Projects */}
                 <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
                     <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
-                        <h6 className="font-bold text-blue-600 text-sm">Projects</h6>
+                        <h6 className="font-bold text-gray-900 text-sm">Projects</h6>
                     </div>
                     <div className="p-6 space-y-5">
                         
@@ -185,7 +185,7 @@ export default function Dashboard() {
                                 <div className="bg-red-500 h-2.5 rounded-full" style={{ width: "20%" }}></div>
                             </div>
                         </div>
-
+ 
                         {/* Sales Tracking */}
                         <div>
                             <div className="flex justify-between text-xs font-bold text-gray-700 mb-1.5">
@@ -204,7 +204,7 @@ export default function Dashboard() {
                                 <span>60%</span>
                             </div>
                             <div className="w-full bg-gray-100 rounded-full h-2.5">
-                                <div className="bg-blue-600 h-2.5 rounded-full" style={{ width: "60%" }}></div>
+                                <div className="bg-gray-900 h-2.5 rounded-full" style={{ width: "60%" }}></div>
                             </div>
                         </div>
 
@@ -215,7 +215,7 @@ export default function Dashboard() {
                                 <span>80%</span>
                             </div>
                             <div className="w-full bg-gray-100 rounded-full h-2.5">
-                                <div className="bg-cyan-500 h-2.5 rounded-full" style={{ width: "80%" }}></div>
+                                <div className="bg-gray-500 h-2.5 rounded-full" style={{ width: "80%" }}></div>
                             </div>
                         </div>
 
@@ -223,7 +223,7 @@ export default function Dashboard() {
                         <div>
                             <div className="flex justify-between text-xs font-bold text-gray-700 mb-1.5">
                                 <span>Account Setup</span>
-                                <span className="text-green-600">Complete!</span>
+                                <span className="text-green-600 font-extrabold">Complete!</span>
                             </div>
                             <div className="w-full bg-gray-100 rounded-full h-2.5">
                                 <div className="bg-green-500 h-2.5 rounded-full" style={{ width: "100%" }}></div>
@@ -238,17 +238,17 @@ export default function Dashboard() {
                     
                     {/* Colors grid */}
                     <div className="grid grid-cols-2 gap-4">
-                        <div className="bg-blue-600 text-white rounded-lg p-4 shadow-sm font-semibold text-sm hover:opacity-95 transition">
+                        <div className="bg-gray-900 text-white rounded-lg p-4 shadow-sm font-semibold text-sm hover:opacity-95 transition">
                             Primary
-                            <div className="text-white/60 text-xs font-normal mt-1">#4e73df</div>
+                            <div className="text-white/60 text-xs font-normal mt-1">#111827</div>
                         </div>
-                        <div className="bg-green-500 text-white rounded-lg p-4 shadow-sm font-semibold text-sm hover:opacity-95 transition">
+                        <div className="bg-green-600 text-white rounded-lg p-4 shadow-sm font-semibold text-sm hover:opacity-95 transition">
                             Success
-                            <div className="text-white/60 text-xs font-normal mt-1">#1cc88a</div>
+                            <div className="text-white/60 text-xs font-normal mt-1">#16a34a</div>
                         </div>
-                        <div className="bg-cyan-500 text-white rounded-lg p-4 shadow-sm font-semibold text-sm hover:opacity-95 transition">
-                            Info
-                            <div className="text-white/60 text-xs font-normal mt-1">#36b9cc</div>
+                        <div className="bg-gray-500 text-white rounded-lg p-4 shadow-sm font-semibold text-sm hover:opacity-95 transition">
+                            Neutral Gray
+                            <div className="text-white/60 text-xs font-normal mt-1">#6b7280</div>
                         </div>
                         <div className="bg-yellow-500 text-white rounded-lg p-4 shadow-sm font-semibold text-sm hover:opacity-95 transition">
                             Warning
@@ -260,7 +260,7 @@ export default function Dashboard() {
                         </div>
                         <div className="bg-gray-800 text-white rounded-lg p-4 shadow-sm font-semibold text-sm hover:opacity-95 transition">
                             Dark
-                            <div className="text-white/60 text-xs font-normal mt-1">#5a5c69</div>
+                            <div className="text-white/60 text-xs font-normal mt-1">#1f2937</div>
                         </div>
                     </div>
 

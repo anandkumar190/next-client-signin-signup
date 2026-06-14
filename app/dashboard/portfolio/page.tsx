@@ -122,7 +122,7 @@ export default function PortfolioManager() {
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-[300px]">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-800"></div>
             </div>
         );
     }
@@ -138,7 +138,7 @@ export default function PortfolioManager() {
                 </div>
                 <button 
                     onClick={openCreateModal}
-                    className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow transition active:scale-[0.99] cursor-pointer"
+                    className="inline-flex items-center gap-2 bg-gray-900 hover:bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold shadow transition active:scale-[0.99] cursor-pointer"
                 >
                     <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -161,7 +161,7 @@ export default function PortfolioManager() {
             {/* Projects list */}
             <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
                 <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
-                    <h6 className="font-bold text-blue-600 text-sm">Portfolio Items Catalog</h6>
+                    <h6 className="font-bold text-gray-900 text-sm">Portfolio Items Catalog</h6>
                 </div>
                 <div className="overflow-x-auto">
                     <table className="w-full text-left text-sm text-gray-500 border-collapse">
@@ -197,7 +197,7 @@ export default function PortfolioManager() {
                                         <td className="px-6 py-4 text-right space-x-3">
                                             <button 
                                                 onClick={() => openEditModal(proj)}
-                                                className="text-blue-600 hover:text-blue-800 font-semibold text-xs transition cursor-pointer"
+                                                className="text-gray-700 hover:text-gray-900 font-semibold text-xs transition cursor-pointer"
                                             >
                                                 Edit
                                             </button>
@@ -240,7 +240,7 @@ export default function PortfolioManager() {
                                     required
                                     value={formData.title}
                                     onChange={e => setFormData({ ...formData, title: e.target.value })}
-                                    className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 text-sm font-medium"
+                                    className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-950/10 focus:border-gray-900 text-sm font-medium"
                                     placeholder="e.g. Baker By Chance"
                                 />
                             </div>
@@ -251,7 +251,7 @@ export default function PortfolioManager() {
                                     <select 
                                         value={formData.category}
                                         onChange={e => setFormData({ ...formData, category: e.target.value })}
-                                        className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 text-sm font-medium"
+                                        className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-950/10 focus:border-gray-900 text-sm font-medium"
                                     >
                                         <option>Commercial</option>
                                         <option>Industrial</option>
@@ -265,7 +265,7 @@ export default function PortfolioManager() {
                                         required
                                         value={formData.year}
                                         onChange={e => setFormData({ ...formData, year: e.target.value })}
-                                        className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 text-sm font-medium"
+                                        className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-950/10 focus:border-gray-900 text-sm font-medium"
                                         placeholder="2024"
                                     />
                                 </div>
@@ -278,7 +278,7 @@ export default function PortfolioManager() {
                                     required
                                     value={formData.location}
                                     onChange={e => setFormData({ ...formData, location: e.target.value })}
-                                    className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 text-sm font-medium"
+                                    className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-950/10 focus:border-gray-900 text-sm font-medium"
                                     placeholder="e.g. Dehradun"
                                 />
                             </div>
@@ -290,7 +290,7 @@ export default function PortfolioManager() {
                                     value={formData.description}
                                     onChange={e => setFormData({ ...formData, description: e.target.value })}
                                     rows={3}
-                                    className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 text-sm font-medium resize-none"
+                                    className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-950/10 focus:border-gray-900 text-sm font-medium resize-none"
                                     placeholder="Brief outline of civil, partition, electrical, ACP cladding works..."
                                 />
                             </div>
@@ -310,7 +310,7 @@ export default function PortfolioManager() {
                                         type="file" 
                                         accept="image/*"
                                         onChange={handleUpload}
-                                        className="text-xs text-gray-500 file:mr-4 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-[10px] file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 file:cursor-pointer"
+                                        className="text-xs text-gray-500 file:mr-4 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-[10px] file:font-semibold file:bg-gray-100 file:text-gray-800 file:cursor-pointer"
                                     />
                                 </div>
                             </div>
@@ -327,7 +327,7 @@ export default function PortfolioManager() {
                                     type="submit"
                                     disabled={saving || uploading}
                                     className={`px-5 py-2.5 rounded-lg font-semibold text-white text-sm transition cursor-pointer ${
-                                        saving || uploading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
+                                        saving || uploading ? "bg-gray-400 cursor-not-allowed" : "bg-gray-900 hover:bg-black"
                                     }`}
                                 >
                                     {saving ? "Saving..." : "Save Project"}

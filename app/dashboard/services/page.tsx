@@ -86,7 +86,7 @@ export default function ServicesManager() {
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-[300px]">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-800"></div>
             </div>
         );
     }
@@ -115,7 +115,7 @@ export default function ServicesManager() {
                 
                 {/* Left side Form: Add Capability */}
                 <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 h-fit">
-                    <h6 className="font-bold text-gray-800 text-sm uppercase tracking-wider mb-4">Add Capability</h6>
+                    <h6 className="font-bold text-gray-900 text-sm uppercase tracking-wider mb-4">Add Capability</h6>
                     <form onSubmit={handleAddService} className="space-y-4">
                         <div>
                             <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Service Name</label>
@@ -123,7 +123,7 @@ export default function ServicesManager() {
                                 type="text"
                                 value={newServiceName}
                                 onChange={e => setNewServiceName(e.target.value)}
-                                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 text-sm font-medium"
+                                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-950/10 focus:border-gray-900 text-sm font-medium"
                                 placeholder="e.g. Demolition & Civil Work"
                                 required
                             />
@@ -132,7 +132,7 @@ export default function ServicesManager() {
                             type="submit"
                             disabled={adding}
                             className={`w-full py-2.5 rounded-lg font-semibold text-white text-sm transition active:scale-[0.99] cursor-pointer ${
-                                adding ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
+                                adding ? "bg-gray-400 cursor-not-allowed" : "bg-gray-900 hover:bg-black"
                             }`}
                         >
                             {adding ? "Adding capability..." : "Add Service"}
@@ -143,7 +143,7 @@ export default function ServicesManager() {
                 {/* Right side Table: Services List */}
                 <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden lg:col-span-2">
                     <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
-                        <h6 className="font-bold text-blue-600 text-sm">Capabilities Grid List</h6>
+                        <h6 className="font-bold text-gray-900 text-sm">Capabilities Grid List</h6>
                     </div>
                     <div className="overflow-x-auto">
                         <table className="w-full text-left text-sm text-gray-500 border-collapse">

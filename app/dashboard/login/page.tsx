@@ -98,7 +98,7 @@ export default function Login() {
                                                 type="email"
                                                 id="InputEmail"
                                                 placeholder="Enter Email Address..."
-                                                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                                                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 ${
                                                     errors.email ? "border-red-500 focus:ring-red-500" : "border-gray-300"
                                                 }`}
                                                 value={user.email}
@@ -119,7 +119,7 @@ export default function Login() {
                                                 type="password"
                                                 id="InputPassword"
                                                 placeholder="Password"
-                                                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                                                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 ${
                                                     errors.password ? "border-red-500 focus:ring-red-500" : "border-gray-300"
                                                 }`}
                                                 value={user.password}
@@ -139,9 +139,9 @@ export default function Login() {
                                             <input
                                                 type="checkbox"
                                                 id="customCheck"
-                                                className="mr-2"
+                                                className="mr-2 rounded border-gray-300 text-gray-900 focus:ring-gray-900"
                                             />
-                                            <label htmlFor="customCheck" className="text-sm text-gray-700">
+                                            <label htmlFor="customCheck" className="text-sm text-gray-700 select-none">
                                                 Remember Me
                                             </label>
                                         </div>
@@ -150,21 +150,21 @@ export default function Login() {
                                         <button
                                             type="submit"
                                             disabled={loading}
-                                            className={`w-full text-white py-3 rounded-lg transition ${
+                                            className={`w-full text-white py-3 rounded-lg font-semibold transition ${
                                                 loading
                                                     ? "bg-gray-400 cursor-not-allowed"
-                                                    : "bg-blue-600 hover:bg-blue-700"
+                                                    : "bg-gray-900 hover:bg-black"
                                             }`}
                                         >
                                             {loading ? "Signing In..." : "Login Now"}
                                         </button>
 
-                                        <hr className="my-6" />
+                                        <hr className="my-6 border-gray-200" />
 
                                         {/* Google Login */}
                                         <button
                                             type="button"
-                                            className="w-full bg-red-600 hover:bg-red-700 text-white border py-3 rounded-lg mb-3 transition"
+                                            className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg mb-3 transition"
                                         >
                                             Login with Google
                                         </button>
@@ -172,18 +172,18 @@ export default function Login() {
                                         {/* Facebook Login */}
                                         <button
                                             type="button"
-                                            className="w-full bg-blue-800 hover:bg-blue-900 text-white py-3 rounded-lg transition"
+                                            className="w-full bg-slate-800 hover:bg-slate-900 text-white font-semibold py-3 rounded-lg transition"
                                         >
                                             Login with Facebook
                                         </button>
                                     </form>
 
-                                    <hr className="my-6" />
+                                    <hr className="my-6 border-gray-200" />
 
                                     <div className="text-center mb-2">
                                         <a
                                             href="/forgot-password"
-                                            className="text-sm text-blue-600 hover:underline"
+                                            className="text-sm text-gray-600 hover:text-gray-900 hover:underline"
                                         >
                                             Forgot Password?
                                         </a>
@@ -192,7 +192,7 @@ export default function Login() {
                                     <div className="text-center">
                                         <Link
                                             href="/dashboard/registration"
-                                            className="text-sm text-blue-600 hover:underline"
+                                            className="text-sm text-gray-600 hover:text-gray-900 hover:underline"
                                         >
                                             Create an Account!
                                         </Link>

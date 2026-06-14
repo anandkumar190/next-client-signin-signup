@@ -99,7 +99,7 @@ export default function HomepageManager() {
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-[300px]">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-800"></div>
             </div>
         );
     }
@@ -129,7 +129,7 @@ export default function HomepageManager() {
                 {/* Hero Section Config Card */}
                 <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
                     <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
-                        <h6 className="font-bold text-blue-600 text-sm">Hero Banner Configuration</h6>
+                        <h6 className="font-bold text-gray-900 text-sm">Hero Banner Configuration</h6>
                     </div>
                     <form onSubmit={saveHeroSettings} className="p-6 space-y-4">
                         
@@ -139,7 +139,7 @@ export default function HomepageManager() {
                                 type="text" 
                                 value={hero.subtitle}
                                 onChange={e => setHero({ ...hero, subtitle: e.target.value })}
-                                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 text-sm font-medium"
+                                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-950/10 focus:border-gray-900 text-sm font-medium"
                                 placeholder="INTERIOR DESIGN & EXECUTION"
                             />
                         </div>
@@ -150,7 +150,7 @@ export default function HomepageManager() {
                                 type="text" 
                                 value={hero.title}
                                 onChange={e => setHero({ ...hero, title: e.target.value })}
-                                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 text-sm font-medium"
+                                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-950/10 focus:border-gray-900 text-sm font-medium"
                                 placeholder="We Engineer Environments"
                             />
                         </div>
@@ -161,7 +161,7 @@ export default function HomepageManager() {
                                 value={hero.description}
                                 onChange={e => setHero({ ...hero, description: e.target.value })}
                                 rows={3}
-                                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 text-sm font-medium resize-none"
+                                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-950/10 focus:border-gray-900 text-sm font-medium resize-none"
                                 placeholder="Explain your studio's focus..."
                             />
                         </div>
@@ -172,7 +172,7 @@ export default function HomepageManager() {
                                 type="text" 
                                 value={hero.ctaText}
                                 onChange={e => setHero({ ...hero, ctaText: e.target.value })}
-                                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 text-sm font-medium"
+                                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-950/10 focus:border-gray-900 text-sm font-medium"
                                 placeholder="EXPLORE OUR WORK"
                             />
                         </div>
@@ -194,7 +194,7 @@ export default function HomepageManager() {
                                         accept="image/*"
                                         onChange={handleUpload}
                                         disabled={uploading}
-                                        className="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 file:cursor-pointer"
+                                        className="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-gray-100 file:text-gray-800 hover:file:bg-gray-200 file:cursor-pointer"
                                     />
                                     <p className="text-[10px] text-gray-400">Supported: JPG, PNG, WEBP. Max size: 5MB</p>
                                 </div>
@@ -207,7 +207,7 @@ export default function HomepageManager() {
                             className={`w-full py-2.5 rounded-lg font-semibold text-white text-sm transition active:scale-[0.99] cursor-pointer ${
                                 savingHero || uploading 
                                     ? "bg-gray-400 cursor-not-allowed" 
-                                    : "bg-blue-600 hover:bg-blue-700"
+                                    : "bg-gray-900 hover:bg-black"
                             }`}
                         >
                             {savingHero ? "Saving changes..." : "Save Hero Section"}
@@ -219,7 +219,7 @@ export default function HomepageManager() {
                 {/* Footer Section Config Card */}
                 <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden h-fit">
                     <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
-                        <h6 className="font-bold text-blue-600 text-sm">Footer Configuration</h6>
+                        <h6 className="font-bold text-gray-900 text-sm">Footer Configuration</h6>
                     </div>
                     <form onSubmit={saveFooterSettings} className="p-6 space-y-4">
                         
@@ -229,7 +229,7 @@ export default function HomepageManager() {
                                 type="text" 
                                 value={footer.title}
                                 onChange={e => setFooter({ ...footer, title: e.target.value })}
-                                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 text-sm font-medium"
+                                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-950/10 focus:border-gray-900 text-sm font-medium"
                                 placeholder="URBAN STYLE SPACE"
                             />
                         </div>
@@ -240,7 +240,7 @@ export default function HomepageManager() {
                                 value={footer.description}
                                 onChange={e => setFooter({ ...footer, description: e.target.value })}
                                 rows={4}
-                                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 text-sm font-medium resize-none"
+                                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-950/10 focus:border-gray-900 text-sm font-medium resize-none"
                                 placeholder="Enter short bio shown in footer column..."
                             />
                         </div>
@@ -251,7 +251,7 @@ export default function HomepageManager() {
                             className={`w-full py-2.5 rounded-lg font-semibold text-white text-sm transition active:scale-[0.99] cursor-pointer ${
                                 savingFooter 
                                     ? "bg-gray-400 cursor-not-allowed" 
-                                    : "bg-blue-600 hover:bg-blue-700"
+                                    : "bg-gray-900 hover:bg-black"
                             }`}
                         >
                             {savingFooter ? "Saving changes..." : "Save Footer Section"}

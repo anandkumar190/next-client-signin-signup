@@ -95,7 +95,7 @@ export default function SeoManager() {
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-[300px]">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-800"></div>
             </div>
         );
     }
@@ -119,7 +119,7 @@ export default function SeoManager() {
 
             <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden max-w-3xl">
                 <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
-                    <h6 className="font-bold text-blue-600 text-sm">SEO Configuration</h6>
+                    <h6 className="font-bold text-gray-900 text-sm">SEO Configuration</h6>
                 </div>
                 
                 <form onSubmit={handleSave} className="p-6 space-y-5">
@@ -128,7 +128,7 @@ export default function SeoManager() {
                         <select 
                             value={seo.pagePath} 
                             onChange={e => setSeo(prev => ({ ...prev, pagePath: e.target.value }))}
-                            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 text-sm font-medium bg-white"
+                            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-950/10 focus:border-gray-900 text-sm font-medium bg-white"
                         >
                             <option value="/">Homepage ( / )</option>
                         </select>
@@ -141,7 +141,7 @@ export default function SeoManager() {
                             required
                             value={seo.title}
                             onChange={e => setSeo(prev => ({ ...prev, title: e.target.value }))}
-                            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 text-sm font-medium"
+                            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-950/10 focus:border-gray-900 text-sm font-medium"
                             placeholder="e.g. Urban Style Space | Interior Design & Execution"
                         />
                     </div>
@@ -152,7 +152,7 @@ export default function SeoManager() {
                             value={seo.description}
                             onChange={e => setSeo(prev => ({ ...prev, description: e.target.value }))}
                             rows={3}
-                            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 text-sm font-medium resize-none"
+                            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-950/10 focus:border-gray-900 text-sm font-medium resize-none"
                             placeholder="Brief snippet describing this page in Google search results (recommended < 160 characters)..."
                         />
                     </div>
@@ -163,7 +163,7 @@ export default function SeoManager() {
                             type="text" 
                             value={keywordInput}
                             onChange={e => setKeywordInput(e.target.value)}
-                            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 text-sm font-medium"
+                            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-950/10 focus:border-gray-900 text-sm font-medium"
                             placeholder="e.g. interior design, office furniture, corporate space plan"
                         />
                     </div>
@@ -174,7 +174,7 @@ export default function SeoManager() {
                             type="url" 
                             value={seo.canonicalUrl}
                             onChange={e => setSeo(prev => ({ ...prev, canonicalUrl: e.target.value }))}
-                            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 text-sm font-medium"
+                            className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-950/10 focus:border-gray-900 text-sm font-medium"
                             placeholder="e.g. https://www.urbanstylespace.com"
                         />
                     </div>
@@ -195,7 +195,7 @@ export default function SeoManager() {
                                     accept="image/*"
                                     onChange={handleUpload}
                                     disabled={uploading}
-                                    className="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 file:cursor-pointer"
+                                    className="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-gray-100 file:text-gray-800 hover:file:bg-gray-200 file:cursor-pointer"
                                 />
                                 <p className="text-[10px] text-gray-400">Supported: JPG, PNG, WEBP. Recommended size: 1200 x 630 px</p>
                             </div>
@@ -208,7 +208,7 @@ export default function SeoManager() {
                         className={`w-full py-2.5 rounded-lg font-semibold text-white text-sm transition active:scale-[0.99] cursor-pointer ${
                             saving || uploading 
                                 ? "bg-gray-400 cursor-not-allowed" 
-                                : "bg-blue-600 hover:bg-blue-700"
+                                : "bg-gray-900 hover:bg-black"
                         }`}
                     >
                         {saving ? "Saving changes..." : "Save SEO Metadata"}
