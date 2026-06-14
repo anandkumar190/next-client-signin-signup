@@ -207,7 +207,7 @@ export default function HomepageManager() {
                             className={`w-full py-2.5 rounded-lg font-semibold text-white text-sm transition active:scale-[0.99] cursor-pointer ${
                                 savingHero || uploading 
                                     ? "bg-gray-400 cursor-not-allowed" 
-                                    : "bg-gray-900 hover:bg-black"
+                                    : "bg-blue-600 hover:bg-blue-700"
                             }`}
                         >
                             {savingHero ? "Saving changes..." : "Save Hero Section"}
@@ -251,7 +251,7 @@ export default function HomepageManager() {
                             className={`w-full py-2.5 rounded-lg font-semibold text-white text-sm transition active:scale-[0.99] cursor-pointer ${
                                 savingFooter 
                                     ? "bg-gray-400 cursor-not-allowed" 
-                                    : "bg-gray-900 hover:bg-black"
+                                    : "bg-blue-600 hover:bg-blue-700"
                             }`}
                         >
                             {savingFooter ? "Saving changes..." : "Save Footer Section"}

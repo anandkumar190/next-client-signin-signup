@@ -376,7 +376,7 @@ export default function AboutManager() {
                     className={`w-full py-3 rounded-lg font-bold text-white text-sm transition active:scale-[0.99] cursor-pointer ${
                         saving || uploadingIndex !== null
                             ? "bg-gray-400 cursor-not-allowed" 
-                            : "bg-gray-900 hover:bg-black"
+                            : "bg-blue-600 hover:bg-blue-700"
                     }`}
                 >
                     {saving ? "Saving changes..." : "Save About Us Settings"}

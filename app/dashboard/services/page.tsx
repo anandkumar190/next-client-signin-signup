@@ -132,7 +132,7 @@ export default function ServicesManager() {
                             type="submit"
                             disabled={adding}
                             className={`w-full py-2.5 rounded-lg font-semibold text-white text-sm transition active:scale-[0.99] cursor-pointer ${
-                                adding ? "bg-gray-400 cursor-not-allowed" : "bg-gray-900 hover:bg-black"
+                                adding ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
                             }`}
                         >
                             {adding ? "Adding capability..." : "Add Service"}

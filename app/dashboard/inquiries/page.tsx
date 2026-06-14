@@ -104,7 +104,7 @@ export default function InquiriesInbox() {
                                     className={`px-4 py-2 border rounded-lg text-xs font-bold transition select-none cursor-pointer hover:shadow-sm ${
                                         inq.isRead 
                                             ? "border-gray-200 bg-white text-gray-500 hover:bg-gray-50" 
-                                            : "border-gray-900 bg-gray-900 text-white hover:bg-black"
+                                            : "border-blue-600 bg-blue-600 text-white hover:bg-blue-700"
                                     }`}
                                 >
                                     {updatingId === inq._id ? "..." : inq.isRead ? "Mark as Unread" : "Mark as Read"}

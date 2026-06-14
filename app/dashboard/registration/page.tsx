@@ -263,7 +263,7 @@ export default function Registration() {
                                     className={`w-full text-white py-3 rounded-lg font-semibold transition duration-200 cursor-pointer ${
                                         loading
                                             ? "bg-gray-400 cursor-not-allowed"
-                                            : "bg-gray-900 hover:bg-black"
+                                            : "bg-blue-600 hover:bg-blue-700"
                                     }`}
                                 >
                                     {loading ? "Registering..." : "Register Account"}
@@ -280,9 +280,9 @@ export default function Registration() {
                                 </button>
 
                                 {/* Facebook Button */}
-                                <button
+                                 <button
                                     type="button"
-                                    className="w-full bg-slate-800 hover:bg-slate-900 text-white font-semibold py-3 rounded-lg flex items-center justify-center transition duration-200"
+                                    className="w-full bg-blue-800 hover:bg-blue-900 text-white py-3 rounded-lg flex items-center justify-center transition duration-200"
                                 >
                                     Register with Facebook
                                 </button>

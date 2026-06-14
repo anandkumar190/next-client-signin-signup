@@ -138,7 +138,7 @@ export default function PortfolioManager() {
                 </div>
                 <button 
                     onClick={openCreateModal}
-                    className="inline-flex items-center gap-2 bg-gray-900 hover:bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold shadow transition active:scale-[0.99] cursor-pointer"
+                    className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow transition active:scale-[0.99] cursor-pointer"
                 >
                     <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -327,7 +327,7 @@ export default function PortfolioManager() {
                                     type="submit"
                                     disabled={saving || uploading}
                                     className={`px-5 py-2.5 rounded-lg font-semibold text-white text-sm transition cursor-pointer ${
-                                        saving || uploading ? "bg-gray-400 cursor-not-allowed" : "bg-gray-900 hover:bg-black"
+                                        saving || uploading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
                                     }`}
                                 >
                                     {saving ? "Saving..." : "Save Project"}

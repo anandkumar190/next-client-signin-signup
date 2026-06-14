@@ -198,7 +198,7 @@ export default function ContactSettingsManager() {
                         type="submit"
                         disabled={saving}
                         className={`w-full py-2.5 rounded-lg font-bold text-white text-sm transition active:scale-[0.99] cursor-pointer ${
-                            saving ? "bg-gray-400 cursor-not-allowed" : "bg-gray-900 hover:bg-black"
+                            saving ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
                         }`}
                     >
                         {saving ? "Saving changes..." : "Save Contact Settings"}
