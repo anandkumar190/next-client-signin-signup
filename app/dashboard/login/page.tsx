@@ -52,7 +52,7 @@ export default function Login() {
             setLoading(true);
             const response = await axios.post("/api/users/login", user);
             console.log("Login Successful", response.data);
-            router.push("/dashboard/profile");
+            router.push("/dashboard");
         } catch (error: any) {
             const errorMsg = error.response?.data?.error || error.message || "An unexpected error occurred during login.";
             setApiError(errorMsg);

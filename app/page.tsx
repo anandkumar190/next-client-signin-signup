@@ -1,65 +1,361 @@
-import Image from "next/image";
+"use client"
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import axios from "axios";
 
 export default function Home() {
-  return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    const [content, setContent] = useState<any>(null);
+    const [projects, setProjects] = useState<any[]>([]);
+    const [selectedCategory, setSelectedCategory] = useState("All");
+    const [loading, setLoading] = useState(true);
+    const [loadingProjects, setLoadingProjects] = useState(false);
+
+    // Contact Form State
+    const [contact, setContact] = useState({ name: "", email: "", message: "" });
+    const [contactStatus, setContactStatus] = useState({ text: "", type: "" });
+    const [sending, setSending] = useState(false);
+
+    // Fetch core content & projects on mount
+    useEffect(() => {
+        const loadPageData = async () => {
+            try {
+                const contentRes = await axios.get("/api/public/content");
+                setContent(contentRes.data.data);
+
+                const projectsRes = await axios.get("/api/public/projects");
+                setProjects(projectsRes.data.data);
+            } catch (err) {
+                console.error("Failed to load page content:", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        loadPageData();
+    }, []);
+
+    // Filter projects by category
+    const handleCategoryChange = async (category: string) => {
+        setSelectedCategory(category);
+        try {
+            setLoadingProjects(true);
+            const res = await axios.get(`/api/public/projects?category=${category}`);
+            setProjects(res.data.data);
+        } catch (err) {
+            console.error("Failed to filter projects:", err);
+        } finally {
+            setLoadingProjects(false);
+        }
+    };
+
+    // Submit inquiry
+    const handleContactSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setContactStatus({ text: "", type: "" });
+
+        if (!contact.name || !contact.email || !contact.message) {
+            setContactStatus({ text: "Please fill out all fields.", type: "error" });
+            return;
+        }
+
+        try {
+            setSending(true);
+            const res = await axios.post("/api/public/inquiry", contact);
+            setContactStatus({ text: res.data.message, type: "success" });
+            setContact({ name: "", email: "", message: "" });
+        } catch (err: any) {
+            setContactStatus({ text: err.response?.data?.error || "Failed to send message.", type: "error" });
+        } finally {
+            setSending(false);
+        }
+    };
+
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center font-sans text-white">
+                <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-indigo-500 mb-4"></div>
+                <p className="text-xs uppercase tracking-[0.2em] text-slate-500 font-bold">Loading Space...</p>
+            </div>
+        );
+    }
+
+    const hero = content?.sections?.hero || {};
+    const footer = content?.sections?.footer || {};
+    const processes = content?.processes || [];
+    const services = content?.services || [];
+
+    const categories = ["All", "Commercial", "Industrial", "Residential"];
+
+    return (
+        <div className="bg-neutral-50 text-slate-900 font-sans selection:bg-indigo-600 selection:text-white min-h-screen">
+            
+            {/* Header / Navbar */}
+            <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-neutral-200">
+                <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+                    <span className="font-extrabold text-base tracking-[0.25em] text-slate-900 uppercase">
+                        {footer.title || "URBAN STYLE SPACE"}
+                    </span>
+                    <nav className="hidden md:flex items-center gap-10">
+                        <a href="#hero" className="text-xs font-bold tracking-widest text-slate-600 hover:text-indigo-600 transition uppercase">Home</a>
+                        <a href="#process" className="text-xs font-bold tracking-widest text-slate-600 hover:text-indigo-600 transition uppercase">Process</a>
+                        <a href="#services" className="text-xs font-bold tracking-widest text-slate-600 hover:text-indigo-600 transition uppercase">Services</a>
+                        <a href="#portfolio" className="text-xs font-bold tracking-widest text-slate-600 hover:text-indigo-600 transition uppercase">Portfolio</a>
+                        <a href="#contact" className="text-xs font-bold tracking-widest text-slate-600 hover:text-indigo-600 transition uppercase">Contact</a>
+                    </nav>
+                    <Link 
+                        href="/dashboard/login"
+                        className="text-xs font-bold tracking-widest border border-slate-900 px-5 py-2.5 hover:bg-slate-900 hover:text-white transition uppercase rounded-lg"
+                    >
+                        Portal Login
+                    </Link>
+                </div>
+            </header>
+
+            {/* Hero Section */}
+            <section id="hero" className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-neutral-900 text-white">
+                <div className="absolute inset-0 z-0">
+                    <img 
+                        src={hero.mediaUrl || "/assets/generated/hero-residence.dim_1920x1080.jpg"} 
+                        className="h-full w-full object-cover opacity-35" 
+                        alt="Hero Bg" 
+                    />
+                </div>
+                <div className="max-w-7xl mx-auto px-6 w-full relative z-10 space-y-6">
+                    <span className="text-xs font-bold tracking-[0.3em] text-indigo-400 block uppercase">
+                        {hero.subtitle || "INTERIOR DESIGN & EXECUTION"}
+                    </span>
+                    <h1 className="text-4xl sm:text-6xl font-extrabold leading-tight tracking-tight max-w-3xl">
+                        {hero.title?.split("Environments")[0]}
+                        <span className="text-indigo-400">Environments.</span>
+                    </h1>
+                    <p className="text-slate-300 text-base sm:text-lg max-w-xl leading-relaxed">
+                        {hero.description || "We engineer environments that reflect the identity and ambition of our clients."}
+                    </p>
+                    <div className="pt-4">
+                        <a 
+                            href="#portfolio"
+                            className="inline-block bg-white text-slate-950 font-bold tracking-widest text-xs px-8 py-4 hover:bg-indigo-500 hover:text-white transition uppercase rounded-lg shadow-lg"
+                        >
+                            {hero.ctaText || "EXPLORE OUR WORK"}
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            {/* Process Section */}
+            <section id="process" className="py-24 md:py-32 px-6 bg-white border-t border-neutral-100">
+                <div className="max-w-7xl mx-auto">
+                    <div className="mb-16 max-w-2xl">
+                        <span className="text-xs font-bold text-indigo-600 tracking-[0.25em] block mb-3 uppercase">HOW WE WORK</span>
+                        <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight leading-tight">A Proven Three-Phase Process</h2>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        {processes.map((proc: any) => (
+                            <div key={proc._id} className="bg-neutral-50 border border-neutral-200 rounded-2xl p-8 shadow-sm flex flex-col justify-between">
+                                <div>
+                                    <span className="text-4xl font-extrabold text-indigo-200 block mb-4">{proc.phaseNumber}</span>
+                                    <h3 className="font-extrabold text-lg text-slate-900 tracking-tight uppercase">{proc.phaseTitle}</h3>
+                                    <span className="text-xs text-slate-400 font-semibold uppercase tracking-wide block mb-6">{proc.phaseSubtitle}</span>
+                                    <ul className="space-y-3">
+                                        {proc.steps.map((step: string, index: number) => (
+                                            <li key={index} className="text-sm text-slate-600 flex items-center gap-3">
+                                                <span className="h-1.5 w-1.5 rounded-full bg-indigo-500 block"></span>
+                                                {step}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Services Section */}
+            <section id="services" className="py-24 md:py-32 px-6 bg-neutral-50 border-t border-neutral-100">
+                <div className="max-w-7xl mx-auto">
+                    <div className="mb-16 max-w-2xl">
+                        <span className="text-xs font-bold text-indigo-600 tracking-[0.25em] block mb-3 uppercase">WHAT WE DO</span>
+                        <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight leading-tight">End-to-End Interior Execution</h2>
+                        <p className="text-sm text-slate-500 mt-3">From concept to handover &mdash; we handle every layer of your space.</p>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {services.map((serv: any) => (
+                            <div key={serv._id} className="bg-white border border-neutral-200 rounded-xl p-6 shadow-xs hover:shadow-sm transition flex items-center gap-4">
+                                <div className="h-8 w-8 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600 shrink-0">
+                                    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                    </svg>
+                                </div>
+                                <span className="font-semibold text-slate-800 text-sm">{serv.name}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Portfolio Section */}
+            <section id="portfolio" className="py-24 md:py-32 px-6 bg-white border-t border-neutral-100">
+                <div className="max-w-7xl mx-auto">
+                    
+                    {/* Header & Filters */}
+                    <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-16">
+                        <div>
+                            <span className="text-xs font-bold text-indigo-600 tracking-[0.25em] block mb-3 uppercase">EXPLORE OUR WORK</span>
+                            <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight leading-tight">Projects Showcase</h2>
+                        </div>
+                        {/* Categories filters */}
+                        <div className="flex flex-wrap gap-2">
+                            {categories.map(cat => (
+                                <button 
+                                    key={cat}
+                                    onClick={() => handleCategoryChange(cat)}
+                                    className={`px-5 py-2 text-xs font-bold tracking-widest uppercase transition rounded-lg border ${
+                                        selectedCategory === cat 
+                                            ? "bg-slate-900 border-slate-900 text-white shadow-md" 
+                                            : "bg-white border-neutral-200 text-slate-600 hover:bg-neutral-50"
+                                    }`}
+                                >
+                                    {cat}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Gallery Grid */}
+                    {loadingProjects ? (
+                        <div className="flex items-center justify-center py-20">
+                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+                        </div>
+                    ) : projects.length === 0 ? (
+                        <div className="text-center py-20 text-slate-400 font-medium text-sm">
+                            No projects found in this category.
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {projects.map((proj: any) => (
+                                <article key={proj._id} className="bg-neutral-50 border border-neutral-200 rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition duration-200 flex flex-col h-full group">
+                                    <div className="h-56 overflow-hidden bg-neutral-100 relative shrink-0">
+                                        <img 
+                                            src={proj.imageUrl} 
+                                            className="h-full w-full object-cover group-hover:scale-105 transition duration-300" 
+                                            alt={proj.title} 
+                                        />
+                                        <span className="absolute top-4 right-4 bg-slate-900/80 backdrop-blur-xs text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                                            {proj.category}
+                                        </span>
+                                    </div>
+                                    <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
+                                        <div className="space-y-2">
+                                            <h3 className="font-extrabold text-lg text-slate-900 tracking-tight leading-snug">{proj.title}</h3>
+                                            <div className="flex gap-2 text-xs text-slate-400 font-medium">
+                                                <span>{proj.location}</span>
+                                                <span>&bull;</span>
+                                                <span>{proj.year}</span>
+                                            </div>
+                                            <p className="text-slate-600 text-xs leading-relaxed font-normal">
+                                                {proj.description}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </article>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            </section>
+
+            {/* Contact Section */}
+            <section id="contact" className="py-24 md:py-32 px-6 bg-neutral-900 text-white border-t border-neutral-800">
+                <div className="max-w-4xl mx-auto text-center space-y-12">
+                    <div className="space-y-4">
+                        <span className="text-xs font-bold text-indigo-400 tracking-[0.25em] block uppercase">INQUIRIES</span>
+                        <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">Let's Design Your Space</h2>
+                        <p className="text-slate-400 text-sm max-w-lg mx-auto">
+                            Submit your project criteria below, and our engineering design leads will get in touch with you shortly.
+                        </p>
+                    </div>
+
+                    {contactStatus.text && (
+                        <div className={`p-4 rounded-xl text-sm border max-w-md mx-auto ${
+                            contactStatus.type === "success" 
+                                ? "bg-green-950/20 border-green-500/30 text-green-400" 
+                                : "bg-red-950/20 border-red-500/30 text-red-400"
+                        }`}>
+                            {contactStatus.text}
+                        </div>
+                    )}
+
+                    <form onSubmit={handleContactSubmit} className="max-w-md mx-auto text-left space-y-6">
+                        <div>
+                            <input 
+                                type="text"
+                                placeholder="Your Name"
+                                value={contact.name}
+                                onChange={e => setContact({ ...contact, name: e.target.value })}
+                                className="w-full bg-transparent border-b border-slate-700 py-3 text-sm text-white focus:outline-none focus:border-indigo-400 transition"
+                            />
+                        </div>
+                        <div>
+                            <input 
+                                type="email"
+                                placeholder="Email Address"
+                                value={contact.email}
+                                onChange={e => setContact({ ...contact, email: e.target.value })}
+                                className="w-full bg-transparent border-b border-slate-700 py-3 text-sm text-white focus:outline-none focus:border-indigo-400 transition"
+                            />
+                        </div>
+                        <div>
+                            <textarea 
+                                placeholder="Tell us about your project (location, scope, scale...)"
+                                value={contact.message}
+                                onChange={e => setContact({ ...contact, message: e.target.value })}
+                                rows={4}
+                                className="w-full bg-transparent border-b border-slate-700 py-3 text-sm text-white focus:outline-none focus:border-indigo-400 transition resize-none"
+                            />
+                        </div>
+                        <button 
+                            type="submit"
+                            disabled={sending}
+                            className={`w-full py-3.5 rounded-lg text-xs font-bold tracking-widest uppercase transition ${
+                                sending ? "bg-slate-700 text-slate-500 cursor-not-allowed" : "bg-white text-slate-950 hover:bg-indigo-500 hover:text-white"
+                            }`}
+                        >
+                            {sending ? "Sending..." : "Send Inquiry"}
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            {/* Footer */}
+            <footer className="bg-neutral-950 text-slate-400 py-16 px-6 border-t border-neutral-900 text-sm">
+                <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
+                    <div className="space-y-4">
+                        <span className="font-extrabold text-white tracking-widest uppercase">{footer.title || "URBAN STYLE SPACE"}</span>
+                        <p className="text-slate-500 text-xs leading-relaxed max-w-xs">
+                            {footer.description || "We engineer environments that reflect the identity and ambition of our clients."}
+                        </p>
+                    </div>
+                    <div className="space-y-4">
+                        <span className="font-bold text-white tracking-wider uppercase">Contact Channels</span>
+                        <p className="text-xs text-slate-500 leading-relaxed">
+                            Email: contact@urbanstylespace.com<br />
+                            Office hours: Mon - Fri: 9:00 AM - 6:00 PM
+                        </p>
+                    </div>
+                    <div className="space-y-4">
+                        <span className="font-bold text-white tracking-wider uppercase">Portal Access</span>
+                        <p className="text-xs text-slate-500 leading-relaxed">
+                            Authorized project heads can access workspace configurations inside the administrative portal.
+                        </p>
+                    </div>
+                </div>
+                <div className="max-w-7xl mx-auto border-t border-neutral-900 mt-12 pt-8 text-center text-xs text-slate-600">
+                    &copy; {new Date().getFullYear()} Urban Style Space. All rights reserved.
+                </div>
+            </footer>
+
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+    );
 }

@@ -1,414 +1,284 @@
-export default function dashboard(){
-    return(
-          <form>
-      <div className="space-y-12">
-        <div className="border-b border-gray-900/10 pb-12">
-          <h2 className="text-base/7 font-semibold text-gray-900">Profile</h2>
-          <p className="mt-1 text-sm/6 text-gray-600">
-            This information will be displayed publicly so be careful what you share.
-          </p>
+"use client"
+import React from "react";
 
-          <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-            <div className="sm:col-span-4">
-              <label htmlFor="username" className="block text-sm/6 font-medium text-gray-900">
-                Username
-              </label>
-              <div className="mt-2">
-                <div className="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
-                  <div className="shrink-0 text-base text-gray-500 select-none sm:text-sm/6">workcation.com/</div>
-                  <input
-                    id="username"
-                    name="username"
-                    type="text"
-                    placeholder="janesmith"
-                    className="block min-w-0 grow bg-white py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="col-span-full">
-              <label htmlFor="about" className="block text-sm/6 font-medium text-gray-900">
-                About
-              </label>
-              <div className="mt-2">
-                <textarea
-                  id="about"
-                  name="about"
-                  rows={3}
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                  defaultValue={''}
-                />
-              </div>
-              <p className="mt-3 text-sm/6 text-gray-600">Write a few sentences about yourself.</p>
-            </div>
-
-            <div className="col-span-full">
-              <label htmlFor="photo" className="block text-sm/6 font-medium text-gray-900">
-                Photo
-              </label>
-              <div className="mt-2 flex items-center gap-x-3">
-                {/* <UserCircleIcon aria-hidden="true" className="size-12 text-gray-300" /> */}
-                <button
-                  type="button"
-                  className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs inset-ring inset-ring-gray-300 hover:bg-gray-50"
-                >
-                  Change
+export default function Dashboard() {
+    return (
+        <div className="space-y-6">
+            
+            {/* Page Header */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 tracking-tight">Dashboard</h1>
+                <button className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow transition-colors active:scale-[0.99] cursor-pointer">
+                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    Generate Report
                 </button>
-              </div>
             </div>
 
-            <div className="col-span-full">
-              <label htmlFor="cover-photo" className="block text-sm/6 font-medium text-gray-900">
-                Cover photo
-              </label>
-              <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
-                <div className="text-center">
-                  {/* <PhotoIcon aria-hidden="true" className="mx-auto size-12 text-gray-300" /> */}
-                  <div className="mt-4 flex text-sm/6 text-gray-600">
-                    <label
-                      htmlFor="file-upload"
-                      className="relative cursor-pointer rounded-md bg-transparent font-semibold text-indigo-600 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-indigo-600 hover:text-indigo-500"
-                    >
-                      <span>Upload a file</span>
-                      <input id="file-upload" name="file-upload" type="file" className="sr-only" />
-                    </label>
-                    <p className="pl-1">or drag and drop</p>
-                  </div>
-                  <p className="text-xs/5 text-gray-600">PNG, JPG, GIF up to 10MB</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="border-b border-gray-900/10 pb-12">
-          <h2 className="text-base/7 font-semibold text-gray-900">Personal Information</h2>
-          <p className="mt-1 text-sm/6 text-gray-600">Use a permanent address where you can receive mail.</p>
-
-          <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-            <div className="sm:col-span-3">
-              <label htmlFor="first-name" className="block text-sm/6 font-medium text-gray-900">
-                First name
-              </label>
-              <div className="mt-2">
-                <input
-                  id="first-name"
-                  name="first-name"
-                  type="text"
-                  autoComplete="given-name"
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                />
-              </div>
-            </div>
-
-            <div className="sm:col-span-3">
-              <label htmlFor="last-name" className="block text-sm/6 font-medium text-gray-900">
-                Last name
-              </label>
-              <div className="mt-2">
-                <input
-                  id="last-name"
-                  name="last-name"
-                  type="text"
-                  autoComplete="family-name"
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                />
-              </div>
-            </div>
-
-            <div className="sm:col-span-4">
-              <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
-                Email address
-              </label>
-              <div className="mt-2">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                />
-              </div>
-            </div>
-
-            <div className="sm:col-span-3">
-              <label htmlFor="country" className="block text-sm/6 font-medium text-gray-900">
-                Country
-              </label>
-              <div className="mt-2 grid grid-cols-1">
-                <select
-                  id="country"
-                  name="country"
-                  autoComplete="country-name"
-                  className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                >
-                  <option>United States</option>
-                  <option>Canada</option>
-                  <option>Mexico</option>
-                </select>
-                {/* <ChevronDownIcon
-                  aria-hidden="true"
-                  className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4"
-                /> */}
-              </div>
-            </div>
-
-            <div className="col-span-full">
-              <label htmlFor="street-address" className="block text-sm/6 font-medium text-gray-900">
-                Street address
-              </label>
-              <div className="mt-2">
-                <input
-                  id="street-address"
-                  name="street-address"
-                  type="text"
-                  autoComplete="street-address"
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                />
-              </div>
-            </div>
-
-            <div className="sm:col-span-2 sm:col-start-1">
-              <label htmlFor="city" className="block text-sm/6 font-medium text-gray-900">
-                City
-              </label>
-              <div className="mt-2">
-                <input
-                  id="city"
-                  name="city"
-                  type="text"
-                  autoComplete="address-level2"
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                />
-              </div>
-            </div>
-
-            <div className="sm:col-span-2">
-              <label htmlFor="region" className="block text-sm/6 font-medium text-gray-900">
-                State / Province
-              </label>
-              <div className="mt-2">
-                <input
-                  id="region"
-                  name="region"
-                  type="text"
-                  autoComplete="address-level1"
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                />
-              </div>
-            </div>
-
-            <div className="sm:col-span-2">
-              <label htmlFor="postal-code" className="block text-sm/6 font-medium text-gray-900">
-                ZIP / Postal code
-              </label>
-              <div className="mt-2">
-                <input
-                  id="postal-code"
-                  name="postal-code"
-                  type="text"
-                  autoComplete="postal-code"
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="border-b border-gray-900/10 pb-12">
-          <h2 className="text-base/7 font-semibold text-gray-900">Notifications</h2>
-          <p className="mt-1 text-sm/6 text-gray-600">
-            We'll always let you know about important changes, but you pick what else you want to hear about.
-          </p>
-
-          <div className="mt-10 space-y-10">
-            <fieldset>
-              <legend className="text-sm/6 font-semibold text-gray-900">By email</legend>
-              <div className="mt-6 space-y-6">
-                <div className="flex gap-3">
-                  <div className="flex h-6 shrink-0 items-center">
-                    <div className="group grid size-4 grid-cols-1">
-                      <input
-                        defaultChecked
-                        id="comments"
-                        name="comments"
-                        type="checkbox"
-                        aria-describedby="comments-description"
-                        className="col-start-1 row-start-1 appearance-none rounded-sm border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
-                      />
-                      <svg
-                        fill="none"
-                        viewBox="0 0 14 14"
-                        className="pointer-events-none col-start-1 row-start-1 size-3.5 self-center justify-self-center stroke-white group-has-disabled:stroke-gray-950/25"
-                      >
-                        <path
-                          d="M3 8L6 11L11 3.5"
-                          strokeWidth={2}
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="opacity-0 group-has-checked:opacity-100"
-                        />
-                        <path
-                          d="M3 7H11"
-                          strokeWidth={2}
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="opacity-0 group-has-indeterminate:opacity-100"
-                        />
-                      </svg>
+            {/* Metrics Row */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                {/* Earnings (Monthly) */}
+                <div className="bg-white rounded-xl shadow-sm border-l-4 border-blue-600 p-6 flex items-center justify-between hover:shadow-md transition">
+                    <div>
+                        <span className="text-xs font-bold text-blue-600 uppercase tracking-wider block mb-1">Earnings (Monthly)</span>
+                        <span className="text-xl font-bold text-gray-800">$40,000</span>
                     </div>
-                  </div>
-                  <div className="text-sm/6">
-                    <label htmlFor="comments" className="font-medium text-gray-900">
-                      Comments
-                    </label>
-                    <p id="comments-description" className="text-gray-500">
-                      Get notified when someones posts a comment on a posting.
-                    </p>
-                  </div>
-                </div>
-                <div className="flex gap-3">
-                  <div className="flex h-6 shrink-0 items-center">
-                    <div className="group grid size-4 grid-cols-1">
-                      <input
-                        id="candidates"
-                        name="candidates"
-                        type="checkbox"
-                        aria-describedby="candidates-description"
-                        className="col-start-1 row-start-1 appearance-none rounded-sm border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
-                      />
-                      <svg
-                        fill="none"
-                        viewBox="0 0 14 14"
-                        className="pointer-events-none col-start-1 row-start-1 size-3.5 self-center justify-self-center stroke-white group-has-disabled:stroke-gray-950/25"
-                      >
-                        <path
-                          d="M3 8L6 11L11 3.5"
-                          strokeWidth={2}
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="opacity-0 group-has-checked:opacity-100"
-                        />
-                        <path
-                          d="M3 7H11"
-                          strokeWidth={2}
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="opacity-0 group-has-indeterminate:opacity-100"
-                        />
-                      </svg>
+                    <div className="text-gray-300">
+                        <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
                     </div>
-                  </div>
-                  <div className="text-sm/6">
-                    <label htmlFor="candidates" className="font-medium text-gray-900">
-                      Candidates
-                    </label>
-                    <p id="candidates-description" className="text-gray-500">
-                      Get notified when a candidate applies for a job.
-                    </p>
-                  </div>
                 </div>
-                <div className="flex gap-3">
-                  <div className="flex h-6 shrink-0 items-center">
-                    <div className="group grid size-4 grid-cols-1">
-                      <input
-                        id="offers"
-                        name="offers"
-                        type="checkbox"
-                        aria-describedby="offers-description"
-                        className="col-start-1 row-start-1 appearance-none rounded-sm border border-gray-300 bg-white checked:border-indigo-600 checked:bg-indigo-600 indeterminate:border-indigo-600 indeterminate:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:checked:bg-gray-100 forced-colors:appearance-auto"
-                      />
-                      <svg
-                        fill="none"
-                        viewBox="0 0 14 14"
-                        className="pointer-events-none col-start-1 row-start-1 size-3.5 self-center justify-self-center stroke-white group-has-disabled:stroke-gray-950/25"
-                      >
-                        <path
-                          d="M3 8L6 11L11 3.5"
-                          strokeWidth={2}
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="opacity-0 group-has-checked:opacity-100"
-                        />
-                        <path
-                          d="M3 7H11"
-                          strokeWidth={2}
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="opacity-0 group-has-indeterminate:opacity-100"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                  <div className="text-sm/6">
-                    <label htmlFor="offers" className="font-medium text-gray-900">
-                      Offers
-                    </label>
-                    <p id="offers-description" className="text-gray-500">
-                      Get notified when a candidate accepts or rejects an offer.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </fieldset>
 
-            <fieldset>
-              <legend className="text-sm/6 font-semibold text-gray-900">Push notifications</legend>
-              <p className="mt-1 text-sm/6 text-gray-600">These are delivered via SMS to your mobile phone.</p>
-              <div className="mt-6 space-y-6">
-                <div className="flex items-center gap-x-3">
-                  <input
-                    defaultChecked
-                    id="push-everything"
-                    name="push-notifications"
-                    type="radio"
-                    className="relative size-4 appearance-none rounded-full border border-gray-300 bg-white before:absolute before:inset-1 before:rounded-full before:bg-white not-checked:before:hidden checked:border-indigo-600 checked:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 forced-colors:appearance-auto forced-colors:before:hidden"
-                  />
-                  <label htmlFor="push-everything" className="block text-sm/6 font-medium text-gray-900">
-                    Everything
-                  </label>
+                {/* Earnings (Annual) */}
+                <div className="bg-white rounded-xl shadow-sm border-l-4 border-green-500 p-6 flex items-center justify-between hover:shadow-md transition">
+                    <div>
+                        <span className="text-xs font-bold text-green-500 uppercase tracking-wider block mb-1">Earnings (Annual)</span>
+                        <span className="text-xl font-bold text-gray-800">$215,000</span>
+                    </div>
+                    <div className="text-gray-300">
+                        <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M12 16v1" />
+                        </svg>
+                    </div>
                 </div>
-                <div className="flex items-center gap-x-3">
-                  <input
-                    id="push-email"
-                    name="push-notifications"
-                    type="radio"
-                    className="relative size-4 appearance-none rounded-full border border-gray-300 bg-white before:absolute before:inset-1 before:rounded-full before:bg-white not-checked:before:hidden checked:border-indigo-600 checked:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 forced-colors:appearance-auto forced-colors:before:hidden"
-                  />
-                  <label htmlFor="push-email" className="block text-sm/6 font-medium text-gray-900">
-                    Same as email
-                  </label>
+
+                {/* Tasks */}
+                <div className="bg-white rounded-xl shadow-sm border-l-4 border-cyan-500 p-6 hover:shadow-md transition">
+                    <div className="flex items-center justify-between mb-3">
+                        <div>
+                            <span className="text-xs font-bold text-cyan-500 uppercase tracking-wider block">Tasks</span>
+                            <span className="text-xl font-bold text-gray-800">50%</span>
+                        </div>
+                        <div className="text-gray-300">
+                            <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div className="w-full bg-gray-100 rounded-full h-2">
+                        <div className="bg-cyan-500 h-2 rounded-full" style={{ width: "50%" }}></div>
+                    </div>
                 </div>
-                <div className="flex items-center gap-x-3">
-                  <input
-                    id="push-nothing"
-                    name="push-notifications"
-                    type="radio"
-                    className="relative size-4 appearance-none rounded-full border border-gray-300 bg-white before:absolute before:inset-1 before:rounded-full before:bg-white not-checked:before:hidden checked:border-indigo-600 checked:bg-indigo-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:border-gray-300 disabled:bg-gray-100 disabled:before:bg-gray-400 forced-colors:appearance-auto forced-colors:before:hidden"
-                  />
-                  <label htmlFor="push-nothing" className="block text-sm/6 font-medium text-gray-900">
-                    No push notifications
-                  </label>
+
+                {/* Pending Requests */}
+                <div className="bg-white rounded-xl shadow-sm border-l-4 border-yellow-500 p-6 flex items-center justify-between hover:shadow-md transition">
+                    <div>
+                        <span className="text-xs font-bold text-yellow-500 uppercase tracking-wider block mb-1">Pending Requests</span>
+                        <span className="text-xl font-bold text-gray-800">18</span>
+                    </div>
+                    <div className="text-gray-300">
+                        <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                        </svg>
+                    </div>
                 </div>
-              </div>
-            </fieldset>
-          </div>
+
+            </div>
+
+            {/* Graphs / Mock Charts Row */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                
+                {/* Earnings Overview */}
+                <div className="bg-white rounded-xl border border-gray-200 shadow-sm lg:col-span-2 overflow-hidden flex flex-col">
+                    <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
+                        <h6 className="font-bold text-blue-600 text-sm">Earnings Overview</h6>
+                    </div>
+                    <div className="p-6 flex-1 flex flex-col justify-between min-h-[300px]">
+                        {/* Mock Line Graph visual */}
+                        <div className="relative flex-1 flex items-end justify-between border-b border-l border-gray-200 pb-2 pl-2 gap-2 mt-4">
+                            {/* Columns and trend line mockup */}
+                            <div className="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-40">
+                                <div className="border-t border-dashed border-gray-200 w-full h-0"></div>
+                                <div className="border-t border-dashed border-gray-200 w-full h-0"></div>
+                                <div className="border-t border-dashed border-gray-200 w-full h-0"></div>
+                            </div>
+                            <svg className="absolute inset-0 w-full h-full p-2 overflow-visible" viewBox="0 0 100 100" preserveAspectRatio="none">
+                                <path 
+                                    d="M 0,90 Q 20,40 40,60 T 80,20 T 100,5" 
+                                    fill="none" 
+                                    stroke="#4e73df" 
+                                    strokeWidth="3"
+                                    strokeLinecap="round"
+                                />
+                                <path 
+                                    d="M 0,90 Q 20,40 40,60 T 80,20 T 100,5 L 100,100 L 0,100 Z" 
+                                    fill="url(#earningsGrad)" 
+                                    opacity="0.1"
+                                />
+                                <defs>
+                                    <linearGradient id="earningsGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stopColor="#4e73df" />
+                                        <stop offset="100%" stopColor="#ffffff" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                        <div className="flex justify-between text-[10px] text-gray-400 font-semibold uppercase tracking-wider pt-3 pl-4">
+                            <span>Jan</span>
+                            <span>Mar</span>
+                            <span>May</span>
+                            <span>Jul</span>
+                            <span>Sep</span>
+                            <span>Nov</span>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Revenue Sources */}
+                <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden flex flex-col">
+                    <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+                        <h6 className="font-bold text-blue-600 text-sm">Revenue Sources</h6>
+                    </div>
+                    <div className="p-6 flex-1 flex flex-col justify-center items-center min-h-[300px]">
+                        {/* Mock Donut Chart */}
+                        <div className="relative h-40 w-40 flex items-center justify-center">
+                            <svg className="h-full w-full rotate-[-90deg]" viewBox="0 0 36 36">
+                                <circle cx="18" cy="18" r="15.915" fill="none" stroke="#eaecf4" strokeWidth="3" />
+                                <circle cx="18" cy="18" r="15.915" fill="none" stroke="#4e73df" strokeWidth="3" strokeDasharray="55 45" strokeDashoffset="0" />
+                                <circle cx="18" cy="18" r="15.915" fill="none" stroke="#1cc88a" strokeWidth="3" strokeDasharray="30 70" strokeDashoffset="-55" />
+                                <circle cx="18" cy="18" r="15.915" fill="none" stroke="#36b9cc" strokeWidth="3" strokeDasharray="15 85" strokeDashoffset="-85" />
+                            </svg>
+                            <div className="absolute flex flex-col items-center justify-center">
+                                <span className="text-xl font-bold text-gray-800">55%</span>
+                                <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wide">Direct</span>
+                            </div>
+                        </div>
+                        <div className="flex gap-4 justify-center mt-6 text-xs font-semibold text-gray-600 w-full">
+                            <span className="flex items-center gap-1.5">
+                                <span className="h-2 w-2 rounded-full bg-blue-600 block"></span>
+                                Direct
+                            </span>
+                            <span className="flex items-center gap-1.5">
+                                <span className="h-2 w-2 rounded-full bg-green-500 block"></span>
+                                Social
+                            </span>
+                            <span className="flex items-center gap-1.5">
+                                <span className="h-2 w-2 rounded-full bg-cyan-500 block"></span>
+                                Referral
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            {/* Cards & Lists Row */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                
+                {/* Projects */}
+                <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                    <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+                        <h6 className="font-bold text-blue-600 text-sm">Projects</h6>
+                    </div>
+                    <div className="p-6 space-y-5">
+                        
+                        {/* Server Migration */}
+                        <div>
+                            <div className="flex justify-between text-xs font-bold text-gray-700 mb-1.5">
+                                <span>Server Migration</span>
+                                <span>20%</span>
+                            </div>
+                            <div className="w-full bg-gray-100 rounded-full h-2.5">
+                                <div className="bg-red-500 h-2.5 rounded-full" style={{ width: "20%" }}></div>
+                            </div>
+                        </div>
+
+                        {/* Sales Tracking */}
+                        <div>
+                            <div className="flex justify-between text-xs font-bold text-gray-700 mb-1.5">
+                                <span>Sales Tracking</span>
+                                <span>40%</span>
+                            </div>
+                            <div className="w-full bg-gray-100 rounded-full h-2.5">
+                                <div className="bg-yellow-500 h-2.5 rounded-full" style={{ width: "40%" }}></div>
+                            </div>
+                        </div>
+
+                        {/* Customer Database */}
+                        <div>
+                            <div className="flex justify-between text-xs font-bold text-gray-700 mb-1.5">
+                                <span>Customer Database</span>
+                                <span>60%</span>
+                            </div>
+                            <div className="w-full bg-gray-100 rounded-full h-2.5">
+                                <div className="bg-blue-600 h-2.5 rounded-full" style={{ width: "60%" }}></div>
+                            </div>
+                        </div>
+
+                        {/* Payout Details */}
+                        <div>
+                            <div className="flex justify-between text-xs font-bold text-gray-700 mb-1.5">
+                                <span>Payout Details</span>
+                                <span>80%</span>
+                            </div>
+                            <div className="w-full bg-gray-100 rounded-full h-2.5">
+                                <div className="bg-cyan-500 h-2.5 rounded-full" style={{ width: "80%" }}></div>
+                            </div>
+                        </div>
+
+                        {/* Account Setup */}
+                        <div>
+                            <div className="flex justify-between text-xs font-bold text-gray-700 mb-1.5">
+                                <span>Account Setup</span>
+                                <span className="text-green-600">Complete!</span>
+                            </div>
+                            <div className="w-full bg-gray-100 rounded-full h-2.5">
+                                <div className="bg-green-500 h-2.5 rounded-full" style={{ width: "100%" }}></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                {/* Color System & Approach */}
+                <div className="space-y-6">
+                    
+                    {/* Colors grid */}
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="bg-blue-600 text-white rounded-lg p-4 shadow-sm font-semibold text-sm hover:opacity-95 transition">
+                            Primary
+                            <div className="text-white/60 text-xs font-normal mt-1">#4e73df</div>
+                        </div>
+                        <div className="bg-green-500 text-white rounded-lg p-4 shadow-sm font-semibold text-sm hover:opacity-95 transition">
+                            Success
+                            <div className="text-white/60 text-xs font-normal mt-1">#1cc88a</div>
+                        </div>
+                        <div className="bg-cyan-500 text-white rounded-lg p-4 shadow-sm font-semibold text-sm hover:opacity-95 transition">
+                            Info
+                            <div className="text-white/60 text-xs font-normal mt-1">#36b9cc</div>
+                        </div>
+                        <div className="bg-yellow-500 text-white rounded-lg p-4 shadow-sm font-semibold text-sm hover:opacity-95 transition">
+                            Warning
+                            <div className="text-white/60 text-xs font-normal mt-1">#f6c23e</div>
+                        </div>
+                        <div className="bg-red-500 text-white rounded-lg p-4 shadow-sm font-semibold text-sm hover:opacity-95 transition">
+                            Danger
+                            <div className="text-white/60 text-xs font-normal mt-1">#e74a3b</div>
+                        </div>
+                        <div className="bg-gray-800 text-white rounded-lg p-4 shadow-sm font-semibold text-sm hover:opacity-95 transition">
+                            Dark
+                            <div className="text-white/60 text-xs font-normal mt-1">#5a5c69</div>
+                        </div>
+                    </div>
+
+                    {/* Development Approach */}
+                    <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 space-y-3">
+                        <h6 className="font-bold text-gray-800 text-sm uppercase tracking-wide">Development Approach</h6>
+                        <p className="text-gray-500 text-sm leading-relaxed">
+                            SB Admin 2 makes extensive use of utility classes in order to reduce CSS bloat and poor page performance. Custom CSS classes can be used to create custom components and custom utility classes.
+                        </p>
+                        <p className="text-gray-500 text-sm leading-relaxed">
+                            We have integrated these styles inside a robust Next.js setup with Server-Side rendering support and clean App routing structures.
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
-      </div>
-
-      <div className="mt-6 flex items-center justify-end gap-x-6">
-        <button type="button" className="text-sm/6 font-semibold text-gray-900">
-          Cancel
-        </button>
-        <button
-          type="submit"
-          className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        >
-          Save
-        </button>
-      </div>
-    </form>
-  )
-
+    );
 }

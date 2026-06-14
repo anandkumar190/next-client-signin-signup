@@ -4,8 +4,8 @@ import { NextRequest,NextResponse } from "next/server";
 export async function GET() {
     try {
         const response = NextResponse.json({
-            message:"Logot successful",
-            sueccess:true
+            message:"Logout successful",
+            success:true
         },{status:200});
 
         response.cookies.set("token" ,"",
