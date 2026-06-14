@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
 
     try {
         const body = await request.json();
-        const { name, isActive, order } = body;
+        const { name, isActive, order, description } = body;
 
         if (!name) {
             return NextResponse.json({ success: false, error: "Service name is required." }, { status: 400 });
@@ -44,7 +44,8 @@ export async function POST(request: NextRequest) {
         const service = new Service({
             name,
             isActive: isActive ?? true,
-            order: order ?? 0
+            order: order ?? 0,
+            description: description ?? ""
         });
 
         await service.save();
@@ -62,7 +63,7 @@ export async function PUT(request: NextRequest) {
 
     try {
         const body = await request.json();
-        const { _id, name, isActive, order } = body;
+        const { _id, name, isActive, order, description } = body;
 
         if (!_id) {
             return NextResponse.json({ success: false, error: "Service ID (_id) is required." }, { status: 400 });
@@ -70,7 +71,7 @@ export async function PUT(request: NextRequest) {
 
         const service = await Service.findByIdAndUpdate(
             _id,
-            { name, isActive, order },
+            { name, isActive, order, description },
             { new: true }
         );
 

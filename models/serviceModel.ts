@@ -13,6 +13,10 @@ const serviceSchema = new mongoose.Schema({
     order: { 
         type: Number, 
         default: 0 
+    },
+    description: {
+        type: String,
+        default: ""
     }
 }, { timestamps: true });
 

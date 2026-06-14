@@ -5,6 +5,8 @@ import axios from "axios";
 export default function ServicesManager() {
     const [services, setServices] = useState<any[]>([]);
     const [newServiceName, setNewServiceName] = useState("");
+    const [newServiceDescription, setNewServiceDescription] = useState("");
+    const [editingService, setEditingService] = useState<any | null>(null);
     const [loading, setLoading] = useState(true);
     const [adding, setAdding] = useState(false);
     const [updatingId, setUpdatingId] = useState<string | null>(null);
@@ -39,17 +41,44 @@ export default function ServicesManager() {
             setMessage({ text: "", type: "" });
             const res = await axios.post("/api/admin/services", {
                 name,
+                description: newServiceDescription.trim(),
                 order: services.length,
                 isActive: true
             });
             setServices(prev => [...prev, res.data.data]);
             setNewServiceName("");
+            setNewServiceDescription("");
             setMessage({ text: "Service capability added successfully!", type: "success" });
         } catch (err: any) {
             console.error("Add error:", err);
             setMessage({ text: err.response?.data?.error || "Failed to add service.", type: "error" });
         } finally {
             setAdding(false);
+        }
+    };
+
+    const handleEditService = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!editingService || !editingService.name.trim()) return;
+
+        try {
+            setUpdatingId(editingService._id);
+            setMessage({ text: "", type: "" });
+            const res = await axios.put("/api/admin/services", {
+                _id: editingService._id,
+                name: editingService.name.trim(),
+                description: editingService.description ? editingService.description.trim() : "",
+                isActive: editingService.isActive,
+                order: editingService.order
+            });
+            setServices(prev => prev.map(s => s._id === editingService._id ? res.data.data : s));
+            setEditingService(null);
+            setMessage({ text: "Service capability updated successfully!", type: "success" });
+        } catch (err: any) {
+            console.error("Edit error:", err);
+            setMessage({ text: err.response?.data?.error || "Failed to update service.", type: "error" });
+        } finally {
+            setUpdatingId(null);
         }
     };
 
@@ -113,30 +142,64 @@ export default function ServicesManager() {
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 
-                {/* Left side Form: Add Capability */}
+                {/* Left side Form: Add or Edit Capability */}
                 <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 h-fit">
-                    <h6 className="font-bold text-gray-900 text-sm uppercase tracking-wider mb-4">Add Capability</h6>
-                    <form onSubmit={handleAddService} className="space-y-4">
+                    <h6 className="font-bold text-gray-900 text-sm uppercase tracking-wider mb-4">
+                        {editingService ? "Edit Capability" : "Add Capability"}
+                    </h6>
+                    <form onSubmit={editingService ? handleEditService : handleAddService} className="space-y-4">
                         <div>
                             <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Service Name</label>
                             <input 
                                 type="text"
-                                value={newServiceName}
-                                onChange={e => setNewServiceName(e.target.value)}
+                                value={editingService ? editingService.name : newServiceName}
+                                onChange={e => editingService 
+                                    ? setEditingService({ ...editingService, name: e.target.value })
+                                    : setNewServiceName(e.target.value)
+                                }
                                 className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-950/10 focus:border-gray-900 text-sm font-medium"
                                 placeholder="e.g. Demolition & Civil Work"
                                 required
                             />
                         </div>
-                        <button 
-                            type="submit"
-                            disabled={adding}
-                            className={`w-full py-2.5 rounded-lg font-semibold text-white text-sm transition active:scale-[0.99] cursor-pointer ${
-                                adding ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
-                            }`}
-                        >
-                            {adding ? "Adding capability..." : "Add Service"}
-                        </button>
+                        <div>
+                            <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Description</label>
+                            <textarea 
+                                value={editingService ? (editingService.description || "") : newServiceDescription}
+                                onChange={e => editingService 
+                                    ? setEditingService({ ...editingService, description: e.target.value })
+                                    : setNewServiceDescription(e.target.value)
+                                }
+                                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-950/10 focus:border-gray-900 text-sm font-medium resize-none text-gray-800"
+                                placeholder="Describe the service (shown on hover)..."
+                                rows={3}
+                            />
+                        </div>
+                        <div className="flex gap-2">
+                            <button 
+                                type="submit"
+                                disabled={adding || (editingService && updatingId === editingService._id)}
+                                className={`w-full py-2.5 rounded-lg font-semibold text-white text-sm transition active:scale-[0.99] cursor-pointer ${
+                                    adding || (editingService && updatingId === editingService._id)
+                                        ? "bg-gray-400 cursor-not-allowed" 
+                                        : "bg-blue-600 hover:bg-blue-700"
+                                }`}
+                            >
+                                {editingService 
+                                    ? (updatingId === editingService._id ? "Saving changes..." : "Save Changes") 
+                                    : (adding ? "Adding capability..." : "Add Service")
+                                }
+                            </button>
+                            {editingService && (
+                                <button 
+                                    type="button"
+                                    onClick={() => setEditingService(null)}
+                                    className="px-4 py-2.5 border border-gray-200 rounded-lg text-sm font-semibold hover:bg-gray-50 cursor-pointer"
+                                >
+                                    Cancel
+                                </button>
+                            )}
+                        </div>
                     </form>
                 </div>
 
@@ -164,7 +227,14 @@ export default function ServicesManager() {
                                 ) : (
                                     services.map((service, index) => (
                                         <tr key={service._id} className="border-b border-gray-100 hover:bg-gray-50/40 transition">
-                                            <td className="px-6 py-4 font-semibold text-gray-800">{service.name}</td>
+                                            <td className="px-6 py-4 text-gray-800">
+                                                <div className="font-semibold">{service.name}</div>
+                                                {service.description && (
+                                                    <div className="text-xs text-gray-400 font-normal mt-0.5 max-w-md line-clamp-1 font-mono">
+                                                        {service.description}
+                                                    </div>
+                                                )}
+                                            </td>
                                             <td className="px-6 py-4 text-center">
                                                 <button
                                                     onClick={() => toggleServiceStatus(service)}
@@ -178,7 +248,14 @@ export default function ServicesManager() {
                                                     {service.isActive ? "Active" : "Disabled"}
                                                 </button>
                                             </td>
-                                            <td className="px-6 py-4 text-right">
+                                            <td className="px-6 py-4 text-right space-x-3">
+                                                <button
+                                                    onClick={() => setEditingService(service)}
+                                                    disabled={updatingId === service._id}
+                                                    className="text-blue-600 hover:text-blue-800 font-semibold text-xs transition cursor-pointer"
+                                                >
+                                                    Edit
+                                                </button>
                                                 <button
                                                     onClick={() => deleteService(service._id)}
                                                     disabled={updatingId === service._id}
