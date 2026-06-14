@@ -21,11 +21,11 @@ export async function PUT(request: NextRequest) {
 
     try {
         const body = await request.json();
-        const { title, subtitle, introText, narrative, notableClients, stats, slides, founderName, founderRole, founderInitials, founderBio, founderExpertise } = body;
+        const { title, subtitle, introText, narrative, notableClients, stats, slides, founderName, founderRole, founderInitials, founderBio, founderExpertise, founderImage } = body;
 
         const about = await About.findOneAndUpdate(
             {},
-            { title, subtitle, introText, narrative, notableClients, stats, slides, founderName, founderRole, founderInitials, founderBio, founderExpertise },
+            { title, subtitle, introText, narrative, notableClients, stats, slides, founderName, founderRole, founderInitials, founderBio, founderExpertise, founderImage },
             { new: true, upsert: true }
         );
 

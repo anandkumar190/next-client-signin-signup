@@ -24,7 +24,8 @@ const aboutSchema = new mongoose.Schema({
     founderRole: { type: String, default: "Founder & Principal Designer" },
     founderInitials: { type: String, default: "RR" },
     founderBio: { type: String, default: "Our foundation may be new, but it's backed by 7 years of deep experience. Expert in AutoCAD (2D & 3D), 3Ds Max visualization, BOQ preparation, project scheduling, and team management." },
-    founderExpertise: [{ type: String }]
+    founderExpertise: [{ type: String }],
+    founderImage: { type: String, default: "" }
 }, { timestamps: true });
 
 const About = mongoose.models.about || mongoose.model("about", aboutSchema);

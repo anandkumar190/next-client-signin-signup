@@ -15,7 +15,7 @@ export async function PUT(request: NextRequest) {
         }
 
         const body = await request.json();
-        const { pagePath, title, description, keywords, ogImage, canonicalUrl } = body;
+        const { pagePath, title, description, keywords, ogImage, canonicalUrl, logo, brandName, ogType, favicon } = body;
 
         if (!pagePath) {
             return NextResponse.json({ success: false, error: "pagePath is required." }, { status: 400 });
@@ -32,7 +32,11 @@ export async function PUT(request: NextRequest) {
                 description, 
                 keywords: Array.isArray(keywords) ? keywords.map((k: string) => k.trim()) : [], 
                 ogImage, 
-                canonicalUrl 
+                canonicalUrl,
+                logo,
+                brandName,
+                ogType,
+                favicon
             },
             { new: true, upsert: true }
         );

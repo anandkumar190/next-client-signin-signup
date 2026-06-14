@@ -24,6 +24,22 @@ const seoSchema = new mongoose.Schema({
     canonicalUrl: { 
         type: String, 
         default: "" 
+    },
+    logo: {
+        type: String,
+        default: ""
+    },
+    brandName: {
+        type: String,
+        default: ""
+    },
+    ogType: {
+        type: String,
+        default: "website"
+    },
+    favicon: {
+        type: String,
+        default: ""
     }
 }, { timestamps: true });
 

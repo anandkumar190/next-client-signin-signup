@@ -13,7 +13,8 @@ export default function AboutManager() {
         founderRole: "",
         founderInitials: "",
         founderBio: "",
-        founderExpertise: [] as string[]
+        founderExpertise: [] as string[],
+        founderImage: ""
     });
     const [stats, setStats] = useState<any[]>([
         { value: "", label: "", sub: "" },
@@ -31,6 +32,7 @@ export default function AboutManager() {
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [uploadingIndex, setUploadingIndex] = useState<number | null>(null);
+    const [founderUploading, setFounderUploading] = useState(false);
     const [message, setMessage] = useState({ text: "", type: "" });
 
     useEffect(() => {
@@ -48,7 +50,8 @@ export default function AboutManager() {
                         founderRole: data.founderRole || "",
                         founderInitials: data.founderInitials || "",
                         founderBio: data.founderBio || "",
-                        founderExpertise: data.founderExpertise || []
+                        founderExpertise: data.founderExpertise || [],
+                        founderImage: data.founderImage || ""
                     });
                     if (data.stats && data.stats.length > 0) setStats(data.stats);
                     if (data.slides && data.slides.length > 0) setSlides(data.slides);
@@ -86,6 +89,29 @@ export default function AboutManager() {
             setMessage({ text: err.response?.data?.error || "Failed to upload slide image.", type: "error" });
         } finally {
             setUploadingIndex(null);
+        }
+    };
+
+    const handleFounderImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append("file", file);
+
+        try {
+            setFounderUploading(true);
+            setMessage({ text: "", type: "" });
+            const res = await axios.post("/api/admin/upload", formData, {
+                headers: { "Content-Type": "multipart/form-data" }
+            });
+            setAbout(prev => ({ ...prev, founderImage: res.data.url }));
+            setMessage({ text: "Founder image uploaded successfully!", type: "success" });
+        } catch (err: any) {
+            console.error("Upload error:", err);
+            setMessage({ text: err.response?.data?.error || "Failed to upload founder image.", type: "error" });
+        } finally {
+            setFounderUploading(false);
         }
     };
 
@@ -314,6 +340,30 @@ export default function AboutManager() {
                 {/* Founder Info Config Card */}
                 <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 space-y-4">
                     <h6 className="font-bold text-gray-900 text-sm border-b pb-2">Founder Callout Configuration</h6>
+                    
+                    <div className="mb-4">
+                        <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Founder Image</label>
+                        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+                            <div className="h-24 w-24 rounded-full bg-gray-50 border border-gray-200 overflow-hidden shrink-0 flex items-center justify-center relative bg-white">
+                                {about.founderImage ? (
+                                    <img src={about.founderImage} className="h-full w-full object-cover" alt="Founder Portrait" />
+                                ) : (
+                                    <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider text-center p-2">No Photo</span>
+                                )}
+                            </div>
+                            <div className="space-y-2 w-full">
+                                <input 
+                                    type="file" 
+                                    accept="image/*"
+                                    onChange={handleFounderImageUpload}
+                                    disabled={founderUploading}
+                                    className="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-gray-100 file:text-gray-800 hover:file:bg-gray-200 file:cursor-pointer"
+                                />
+                                <p className="text-[10px] text-gray-400">Supported: JPG, PNG, WEBP. Square/Portrait ratio recommended.</p>
+                            </div>
+                        </div>
+                    </div>
+
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
                             <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Founder Name</label>
@@ -372,9 +422,9 @@ export default function AboutManager() {
 
                 <button 
                     type="submit"
-                    disabled={saving || uploadingIndex !== null}
+                    disabled={saving || uploadingIndex !== null || founderUploading}
                     className={`w-full py-3 rounded-lg font-bold text-white text-sm transition active:scale-[0.99] cursor-pointer ${
-                        saving || uploadingIndex !== null
+                        saving || uploadingIndex !== null || founderUploading
                             ? "bg-gray-400 cursor-not-allowed" 
                             : "bg-blue-600 hover:bg-blue-700"
                     }`}

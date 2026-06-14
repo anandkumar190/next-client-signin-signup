@@ -9,7 +9,11 @@ export default function SeoManager() {
         description: "",
         keywords: [] as string[],
         ogImage: "",
-        canonicalUrl: ""
+        canonicalUrl: "",
+        logo: "",
+        brandName: "",
+        ogType: "website",
+        favicon: ""
     });
     const [keywordInput, setKeywordInput] = useState("");
     const [loading, setLoading] = useState(true);
@@ -30,7 +34,11 @@ export default function SeoManager() {
                         description: data.description || "",
                         keywords: data.keywords || [],
                         ogImage: data.ogImage || "",
-                        canonicalUrl: data.canonicalUrl || ""
+                        canonicalUrl: data.canonicalUrl || "",
+                        logo: data.logo || "",
+                        brandName: data.brandName || "",
+                        ogType: data.ogType || "website",
+                        favicon: data.favicon || ""
                     });
                     setKeywordInput((data.keywords || []).join(", "));
                 }
@@ -44,7 +52,7 @@ export default function SeoManager() {
             });
     }, [seo.pagePath]);
 
-    const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>, field: "ogImage" | "logo" | "favicon") => {
         const file = e.target.files?.[0];
         if (!file) return;
 
@@ -57,8 +65,11 @@ export default function SeoManager() {
             const res = await axios.post("/api/admin/upload", formData, {
                 headers: { "Content-Type": "multipart/form-data" }
             });
-            setSeo(prev => ({ ...prev, ogImage: res.data.url }));
-            setMessage({ text: "OpenGraph image uploaded successfully!", type: "success" });
+            setSeo(prev => ({ ...prev, [field]: res.data.url }));
+            setMessage({ 
+                text: `${field === "ogImage" ? "OpenGraph social image" : field === "favicon" ? "Favicon image" : "Brand logo image"} uploaded successfully!`, 
+                type: "success" 
+            });
         } catch (err: any) {
             console.error("Upload error:", err);
             setMessage({ text: err.response?.data?.error || "Failed to upload image.", type: "error" });
@@ -193,11 +204,87 @@ export default function SeoManager() {
                                 <input 
                                     type="file" 
                                     accept="image/*"
-                                    onChange={handleUpload}
+                                    onChange={e => handleUpload(e, "ogImage")}
                                     disabled={uploading}
                                     className="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-gray-100 file:text-gray-800 hover:file:bg-gray-200 file:cursor-pointer"
                                 />
                                 <p className="text-[10px] text-gray-400">Supported: JPG, PNG, WEBP. Recommended size: 1200 x 630 px</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="border-t border-gray-150 pt-6 mt-6">
+                        <h6 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Branding & Additional OpenGraph Settings</h6>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Brand/Studio Name</label>
+                                <input 
+                                    type="text" 
+                                    value={seo.brandName}
+                                    onChange={e => setSeo(prev => ({ ...prev, brandName: e.target.value }))}
+                                    className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-950/10 focus:border-gray-900 text-sm font-medium"
+                                    placeholder="e.g. URBAN STYLE SPACE"
+                                />
+                            </div>
+                            
+                            <div>
+                                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">OpenGraph Type Tag (og:type)</label>
+                                <select 
+                                    value={seo.ogType}
+                                    onChange={e => setSeo(prev => ({ ...prev, ogType: e.target.value }))}
+                                    className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-950/10 focus:border-gray-900 text-sm font-medium bg-white"
+                                >
+                                    <option value="website">website</option>
+                                    <option value="article">article</option>
+                                    <option value="profile">profile</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div className="mb-4">
+                            <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Brand Logo Image</label>
+                            <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+                                <div className="h-20 w-36 rounded-lg bg-gray-50 border border-gray-200 overflow-hidden shrink-0 flex items-center justify-center relative bg-white">
+                                    {seo.logo ? (
+                                        <img src={seo.logo} className="h-full w-full object-contain p-2" alt="Brand Logo Preview" />
+                                    ) : (
+                                        <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider text-center p-2">No Logo Image</span>
+                                    )}
+                                </div>
+                                <div className="space-y-2 w-full">
+                                    <input 
+                                        type="file" 
+                                        accept="image/*"
+                                        onChange={e => handleUpload(e, "logo")}
+                                        disabled={uploading}
+                                        className="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-gray-100 file:text-gray-800 hover:file:bg-gray-200 file:cursor-pointer"
+                                    />
+                                    <p className="text-[10px] text-gray-400">Supported: SVG, PNG, JPG, WEBP. Transparent background recommended.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="mb-4">
+                            <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Favicon Icon</label>
+                            <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+                                <div className="h-20 w-36 rounded-lg bg-gray-50 border border-gray-200 overflow-hidden shrink-0 flex items-center justify-center relative bg-white">
+                                    {seo.favicon ? (
+                                        <img src={seo.favicon} className="h-full w-full object-contain p-2" alt="Favicon Preview" />
+                                    ) : (
+                                        <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider text-center p-2">No Favicon</span>
+                                    )}
+                                </div>
+                                <div className="space-y-2 w-full">
+                                    <input 
+                                        type="file" 
+                                        accept="image/png, image/x-icon, image/vnd.microsoft.icon, image/svg+xml, image/jpeg, image/webp"
+                                        onChange={e => handleUpload(e, "favicon")}
+                                        disabled={uploading}
+                                        className="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-gray-100 file:text-gray-800 hover:file:bg-gray-200 file:cursor-pointer"
+                                    />
+                                    <p className="text-[10px] text-gray-400">Supported: ICO, PNG, SVG, JPG, WEBP. Recommended dimensions: 16x16, 32x32, or 48x48 px.</p>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -4,6 +4,7 @@ import Process from "@/models/processModel";
 import Service from "@/models/serviceModel";
 import About from "@/models/aboutModel";
 import ContactConfig from "@/models/contactConfigModel";
+import Seo from "@/models/seoModel";
 import { NextRequest, NextResponse } from "next/server";
 
 connect();
@@ -102,8 +103,8 @@ async function seedDefaultContent() {
     }
 
     // 4. Seed About Us Configuration
-    const aboutCount = await About.countDocuments();
-    if (aboutCount === 0) {
+    let aboutRecord = await About.findOne({});
+    if (!aboutRecord) {
         await About.create({
             title: "Built on Experience. Driven by Craft.",
             subtitle: "ABOUT US",
@@ -141,8 +142,14 @@ async function seedDefaultContent() {
             founderRole: "Founder & Principal Designer",
             founderInitials: "RR",
             founderBio: "Our foundation may be new, but it's backed by 7 years of deep experience. Expert in AutoCAD (2D & 3D), 3Ds Max visualization, BOQ preparation, project scheduling, and team management.",
-            founderExpertise: ["AutoCAD 2D & 3D", "3Ds Max", "BOQ Preparation", "Project Scheduling"]
+            founderExpertise: ["AutoCAD 2D & 3D", "3Ds Max", "BOQ Preparation", "Project Scheduling"],
+            founderImage: ""
         });
+    } else {
+        if (aboutRecord.founderImage === undefined) {
+            aboutRecord.founderImage = "";
+            await aboutRecord.save();
+        }
     }
 
     // 5. Seed Contact Configuration
@@ -160,6 +167,43 @@ async function seedDefaultContent() {
             hours: "Mon – Sat, 9am – 7pm IST"
         });
     }
+
+    // 6. Seed Default SEO
+    let homeSeo = await Seo.findOne({ pagePath: "/" });
+    if (!homeSeo) {
+        await Seo.create({
+            pagePath: "/",
+            title: "Urban Style Space | Interior Design & Execution",
+            description: "Urban Style Space is a premier interior design and execution firm specializing in high-impact commercial and corporate environments.",
+            keywords: ["interior design", "interior execution", "office interiors", "commercial design", "Rajeev Kumar Ranjan"],
+            canonicalUrl: "https://www.urbanstylespace.com",
+            brandName: "URBAN STYLE SPACE",
+            logo: "",
+            ogType: "website",
+            favicon: ""
+        });
+    } else {
+        let needsUpdate = false;
+        if (homeSeo.brandName === undefined || homeSeo.brandName === "") {
+            homeSeo.brandName = "URBAN STYLE SPACE";
+            needsUpdate = true;
+        }
+        if (homeSeo.logo === undefined) {
+            homeSeo.logo = "";
+            needsUpdate = true;
+        }
+        if (homeSeo.ogType === undefined || homeSeo.ogType === "") {
+            homeSeo.ogType = "website";
+            needsUpdate = true;
+        }
+        if (homeSeo.favicon === undefined) {
+            homeSeo.favicon = "";
+            needsUpdate = true;
+        }
+        if (needsUpdate) {
+            await homeSeo.save();
+        }
+    }
 }
 
 export async function GET(request: NextRequest) {
@@ -171,6 +215,7 @@ export async function GET(request: NextRequest) {
         const services = await Service.find({ isActive: true }).sort({ order: 1 });
         const about = await About.findOne({});
         const contactConfig = await ContactConfig.findOne({});
+        const seo = await Seo.findOne({ pagePath: "/" });
 
         // Map sections array to object keys for easier client consumption
         const contentMap: any = {};
@@ -185,7 +230,8 @@ export async function GET(request: NextRequest) {
                 processes,
                 services,
                 about,
-                contactConfig
+                contactConfig,
+                seo
             }
         }, { status: 200 });
 
