@@ -14,6 +14,7 @@ export default function PortfolioManager() {
         location: "",
         description: "",
         imageUrl: "",
+        imageUrls: [] as string[],
         isActive: true
     });
     const [uploading, setUploading] = useState(false);
@@ -40,23 +41,65 @@ export default function PortfolioManager() {
     };
 
     const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (!file) return;
+        const files = e.target.files;
+        if (!files || files.length === 0) return;
 
         const data = new FormData();
-        data.append("file", file);
+        for (let i = 0; i < files.length; i++) {
+            data.append("files", files[i]);
+        }
 
         try {
             setUploading(true);
             const res = await axios.post("/api/admin/upload", data, {
                 headers: { "Content-Type": "multipart/form-data" }
             });
-            setFormData(prev => ({ ...prev, imageUrl: res.data.url }));
+            
+            const uploadedUrls: string[] = res.data.urls || [res.data.url];
+            
+            setFormData(prev => {
+                const nextUrls = [...(prev.imageUrls || []), ...uploadedUrls];
+                const nextCover = prev.imageUrl || uploadedUrls[0] || "";
+                return {
+                    ...prev,
+                    imageUrl: nextCover,
+                    imageUrls: nextUrls
+                };
+            });
         } catch (err: any) {
             console.error("Upload error:", err);
-            alert(err.response?.data?.error || "Failed to upload file.");
+            alert(err.response?.data?.error || "Failed to upload files.");
         } finally {
             setUploading(false);
+        }
+    };
+
+    const removeImage = (urlToRemove: string) => {
+        setFormData(prev => {
+            const nextUrls = (prev.imageUrls || []).filter(url => url !== urlToRemove);
+            let nextCover = prev.imageUrl;
+            if (prev.imageUrl === urlToRemove) {
+                nextCover = nextUrls[0] || "";
+            }
+            return {
+                ...prev,
+                imageUrl: nextCover,
+                imageUrls: nextUrls
+            };
+        });
+    };
+
+    const setAsCover = (url: string) => {
+        setFormData(prev => ({
+            ...prev,
+            imageUrl: url
+        }));
+    };
+
+    const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>, url: string) => {
+        const target = e.currentTarget;
+        if (url && url.startsWith("/uploads/") && !target.src.includes("http://13.207.126.237")) {
+            target.src = `http://13.207.126.237${url}`;
         }
     };
 
@@ -96,13 +139,17 @@ export default function PortfolioManager() {
             location: "",
             description: "",
             imageUrl: "",
+            imageUrls: [],
             isActive: true
         });
         setModalOpen(true);
     };
 
     const openEditModal = (project: any) => {
-        setFormData(project);
+        setFormData({
+            ...project,
+            imageUrls: project.imageUrls || (project.imageUrl ? [project.imageUrl] : [])
+        });
         setModalOpen(true);
     };
 
@@ -186,8 +233,17 @@ export default function PortfolioManager() {
                                 projects.map(proj => (
                                     <tr key={proj._id} className="border-b border-gray-100 hover:bg-gray-50/40 transition">
                                         <td className="px-6 py-3">
-                                            <div className="h-12 w-20 rounded bg-gray-50 border border-gray-200 overflow-hidden shrink-0">
-                                                <img src={proj.imageUrl} className="h-full w-full object-cover" alt={proj.title} />
+                                            <div className="h-12 w-20 rounded bg-gray-50 border border-gray-200 overflow-hidden shrink-0 flex items-center justify-center">
+                                                {proj.imageUrl ? (
+                                                    <img 
+                                                        src={proj.imageUrl} 
+                                                        onError={(e) => handleImageError(e, proj.imageUrl)}
+                                                        className="h-full w-full object-cover" 
+                                                        alt={proj.title} 
+                                                    />
+                                                ) : (
+                                                    <span className="text-[10px] text-gray-400 font-bold uppercase">No Image</span>
+                                                )}
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 font-semibold text-gray-800">{proj.title}</td>
@@ -295,22 +351,70 @@ export default function PortfolioManager() {
                                 />
                             </div>
 
-                            {/* Image Attachment Upload */}
-                            <div>
-                                <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Project Cover Image</label>
-                                <div className="flex items-center gap-4">
-                                    <div className="h-16 w-28 rounded bg-gray-50 border border-gray-200 overflow-hidden shrink-0 flex items-center justify-center">
-                                        {formData.imageUrl ? (
-                                            <img src={formData.imageUrl} className="h-full w-full object-cover" alt="Thumb" />
-                                        ) : (
-                                            <span className="text-[9px] text-gray-400 font-bold uppercase">No Image</span>
-                                        )}
+                            {/* Multiple Image Gallery Management */}
+                            <div className="space-y-3">
+                                <div className="flex items-center justify-between">
+                                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider">Project Images Gallery</label>
+                                    {uploading && <span className="text-xs text-blue-600 font-semibold animate-pulse">Uploading...</span>}
+                                </div>
+
+                                {formData.imageUrls && formData.imageUrls.length > 0 ? (
+                                    <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 border border-gray-100 p-3 rounded-xl bg-gray-50/50 max-h-52 overflow-y-auto">
+                                        {formData.imageUrls.map((url, index) => {
+                                            const isCover = formData.imageUrl === url;
+                                            return (
+                                                <div key={index} className="relative group aspect-video rounded-lg border border-gray-200 overflow-hidden bg-white shadow-xs">
+                                                    <img 
+                                                        src={url} 
+                                                        onError={(e) => handleImageError(e, url)}
+                                                        className="h-full w-full object-cover" 
+                                                        alt={`Project Image ${index + 1}`} 
+                                                    />
+                                                    
+                                                    {isCover && (
+                                                        <span className="absolute top-1.5 left-1.5 bg-amber-500 text-white text-[8px] font-extrabold px-1.5 py-0.5 rounded shadow-sm">
+                                                            Cover
+                                                        </span>
+                                                    )}
+
+                                                    <div className="absolute inset-0 bg-slate-950/70 opacity-0 group-hover:opacity-100 transition duration-150 flex items-center justify-center gap-1.5">
+                                                        {!isCover && (
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => setAsCover(url)}
+                                                                title="Set as Main Cover"
+                                                                className="p-1 rounded bg-amber-500 hover:bg-amber-600 text-white text-[10px] transition cursor-pointer font-bold"
+                                                            >
+                                                                ★
+                                                            </button>
+                                                        )}
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => removeImage(url)}
+                                                            title="Delete Image"
+                                                            className="p-1 rounded bg-red-600 hover:bg-red-700 text-white text-[10px] transition cursor-pointer font-bold"
+                                                        >
+                                                            ✕
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
                                     </div>
+                                ) : (
+                                    <div className="border border-dashed border-gray-200 rounded-xl p-8 text-center text-gray-400 text-xs bg-gray-50/50 font-medium">
+                                        No images uploaded yet. Select files below.
+                                    </div>
+                                )}
+
+                                <div className="flex items-center gap-4">
                                     <input 
                                         type="file" 
                                         accept="image/*"
+                                        multiple
                                         onChange={handleUpload}
-                                        className="text-xs text-gray-500 file:mr-4 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-[10px] file:font-semibold file:bg-gray-100 file:text-gray-800 file:cursor-pointer"
+                                        disabled={uploading}
+                                        className="text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 file:hover:bg-blue-100 file:cursor-pointer disabled:opacity-50"
                                     />
                                 </div>
                             </div>

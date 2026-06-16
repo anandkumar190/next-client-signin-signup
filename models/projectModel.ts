@@ -25,6 +25,10 @@ const projectSchema = new mongoose.Schema({
         type: String, 
         required: true 
     },
+    imageUrls: {
+        type: [String],
+        default: []
+    },
     isActive: { 
         type: Boolean, 
         default: true 

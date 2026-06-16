@@ -15,6 +15,50 @@ export default function Home() {
     const [contactStatus, setContactStatus] = useState({ text: "", type: "" });
     const [sending, setSending] = useState(false);
 
+    // Project Detail Lightbox State
+    const [selectedProject, setSelectedProject] = useState<any | null>(null);
+    const [activeImgIndex, setActiveImgIndex] = useState(0);
+
+    const openProjectDetails = (proj: any) => {
+        setSelectedProject(proj);
+        setActiveImgIndex(0);
+    };
+
+    const closeProjectDetails = () => {
+        setSelectedProject(null);
+    };
+
+    const nextImage = (e: React.MouseEvent, max: number) => {
+        e.stopPropagation();
+        setActiveImgIndex(prev => (prev + 1) % max);
+    };
+
+    const prevImage = (e: React.MouseEvent, max: number) => {
+        e.stopPropagation();
+        setActiveImgIndex(prev => (prev - 1 + max) % max);
+    };
+
+    // Inline Card Slider State
+    const [cardImageIndices, setCardImageIndices] = useState<Record<string, number>>({});
+
+    const handleCardNextImage = (e: React.MouseEvent, proj: any) => {
+        e.stopPropagation();
+        const urls = proj.imageUrls && proj.imageUrls.length > 0 ? proj.imageUrls : [proj.imageUrl];
+        setCardImageIndices(prev => ({
+            ...prev,
+            [proj._id]: ((prev[proj._id] || 0) + 1) % urls.length
+        }));
+    };
+
+    const handleCardPrevImage = (e: React.MouseEvent, proj: any) => {
+        e.stopPropagation();
+        const urls = proj.imageUrls && proj.imageUrls.length > 0 ? proj.imageUrls : [proj.imageUrl];
+        setCardImageIndices(prev => ({
+            ...prev,
+            [proj._id]: ((prev[proj._id] || 0) - 1 + urls.length) % urls.length
+        }));
+    };
+
     // Fetch core content & projects on mount
     useEffect(() => {
         const loadPageData = async () => {
@@ -235,26 +279,74 @@ export default function Home() {
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                             {projects.map((proj: any) => (
-                                <article key={proj._id} className="bg-neutral-50 border border-neutral-200 rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition duration-200 flex flex-col h-full group">
+                                <article 
+                                    key={proj._id} 
+                                    onClick={() => openProjectDetails(proj)}
+                                    className="bg-neutral-50 border border-neutral-200 rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition duration-200 flex flex-col h-full group cursor-pointer"
+                                >
                                     <div className="h-56 overflow-hidden bg-neutral-100 relative shrink-0">
                                         <img 
-                                            src={proj.imageUrl} 
-                                            className="h-full w-full object-cover group-hover:scale-105 transition duration-300" 
+                                            src={
+                                                proj.imageUrls && proj.imageUrls.length > 0
+                                                    ? proj.imageUrls[cardImageIndices[proj._id] || 0]
+                                                    : proj.imageUrl
+                                            } 
+                                            className="h-full w-full object-cover group-hover:scale-102 transition duration-300 select-none" 
                                             alt={proj.title} 
                                         />
-                                        <span className="absolute top-4 right-4 bg-slate-900/80 backdrop-blur-xs text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                                        <span className="absolute top-4 right-4 bg-slate-900/80 backdrop-blur-xs text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider z-10">
                                             {proj.category}
                                         </span>
+                                        
+                                        {/* Inline Slider Indicators / Navigation */}
+                                        {proj.imageUrls && proj.imageUrls.length > 1 ? (
+                                            <>
+                                                {/* Left Arrow */}
+                                                <button
+                                                    onClick={(e) => handleCardPrevImage(e, proj)}
+                                                    className="absolute left-2.5 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-1.5 rounded-full transition duration-150 z-10 opacity-0 group-hover:opacity-100 cursor-pointer select-none"
+                                                >
+                                                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
+                                                    </svg>
+                                                </button>
+                                                
+                                                {/* Right Arrow */}
+                                                <button
+                                                    onClick={(e) => handleCardNextImage(e, proj)}
+                                                    className="absolute right-2.5 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-1.5 rounded-full transition duration-150 z-10 opacity-0 group-hover:opacity-100 cursor-pointer select-none"
+                                                >
+                                                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                                                    </svg>
+                                                </button>
+
+                                                {/* Dot Indicators */}
+                                                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1 z-10 bg-black/30 backdrop-blur-xs px-2.5 py-1 rounded-full">
+                                                    {proj.imageUrls.map((_: any, idx: number) => {
+                                                        const activeIdx = cardImageIndices[proj._id] || 0;
+                                                        return (
+                                                            <span 
+                                                                key={idx} 
+                                                                className={`h-1.5 w-1.5 rounded-full transition-all duration-150 ${
+                                                                    activeIdx === idx ? "bg-white scale-110" : "bg-white/45"
+                                                                }`}
+                                                            />
+                                                        );
+                                                    })}
+                                                </div>
+                                            </>
+                                        ) : null}
                                     </div>
                                     <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
                                         <div className="space-y-2">
-                                            <h3 className="font-extrabold text-lg text-slate-900 tracking-tight leading-snug">{proj.title}</h3>
+                                            <h3 className="font-extrabold text-lg text-slate-900 tracking-tight leading-snug group-hover:text-indigo-600 transition duration-150">{proj.title}</h3>
                                             <div className="flex gap-2 text-xs text-slate-400 font-medium">
                                                 <span>{proj.location}</span>
                                                 <span>&bull;</span>
                                                 <span>{proj.year}</span>
                                             </div>
-                                            <p className="text-slate-600 text-xs leading-relaxed font-normal">
+                                            <p className="text-slate-600 text-xs leading-relaxed font-normal line-clamp-3">
                                                 {proj.description}
                                             </p>
                                         </div>
@@ -355,6 +447,132 @@ export default function Home() {
                     &copy; {new Date().getFullYear()} Urban Style Space. All rights reserved.
                 </div>
             </footer>
+
+            {/* Project Details Lightbox Modal */}
+            {selectedProject && (() => {
+                const gallery = selectedProject.imageUrls && selectedProject.imageUrls.length > 0
+                    ? selectedProject.imageUrls
+                    : [selectedProject.imageUrl];
+                const activeUrl = gallery[activeImgIndex] || "";
+                return (
+                    <div 
+                        className="fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 md:p-8 animate-in fade-in duration-200"
+                        onClick={closeProjectDetails}
+                    >
+                        <div 
+                            className="bg-white rounded-3xl overflow-hidden shadow-2xl max-w-5xl w-full h-[85vh] sm:h-[75vh] md:h-[70vh] flex flex-col md:flex-row relative animate-in zoom-in-95 duration-200"
+                            onClick={e => e.stopPropagation()}
+                        >
+                            {/* Close button */}
+                            <button 
+                                onClick={closeProjectDetails}
+                                className="absolute top-4 right-4 z-10 bg-slate-900/80 hover:bg-slate-950 text-white p-2.5 rounded-full transition shadow cursor-pointer focus:outline-none"
+                            >
+                                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+
+                            {/* Left Column: Image Viewer */}
+                            <div className="flex-1 bg-slate-950 relative flex items-center justify-center min-h-[40%] md:min-h-0">
+                                <img 
+                                    src={activeUrl} 
+                                    className="max-h-full max-w-full object-contain select-none" 
+                                    alt={`${selectedProject.title} Detail`} 
+                                />
+
+                                {/* Carousel Navigation Arrows */}
+                                {gallery.length > 1 && (
+                                    <>
+                                        <button 
+                                            onClick={(e) => prevImage(e, gallery.length)}
+                                            className="absolute left-4 bg-black/45 hover:bg-black/65 text-white p-3 rounded-full transition cursor-pointer select-none"
+                                        >
+                                            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
+                                            </svg>
+                                        </button>
+                                        <button 
+                                            onClick={(e) => nextImage(e, gallery.length)}
+                                            className="absolute right-4 bg-black/45 hover:bg-black/65 text-white p-3 rounded-full transition cursor-pointer select-none"
+                                        >
+                                            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                                            </svg>
+                                        </button>
+                                    </>
+                                )}
+
+                                {/* Image count indicator */}
+                                {gallery.length > 1 && (
+                                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/60 backdrop-blur-xs text-white text-[10px] font-bold px-3 py-1 rounded-full tracking-widest uppercase">
+                                        {activeImgIndex + 1} / {gallery.length}
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Right Column: Project Info */}
+                            <div className="w-full md:w-[360px] p-6 sm:p-8 flex flex-col justify-between overflow-y-auto border-t md:border-t-0 md:border-l border-neutral-100 bg-white">
+                                <div className="space-y-5">
+                                    {/* Category badge */}
+                                    <div>
+                                        <span className="bg-indigo-50 border border-indigo-100 text-indigo-700 text-[9px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-widest">
+                                            {selectedProject.category}
+                                        </span>
+                                    </div>
+
+                                    {/* Title */}
+                                    <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight leading-tight">
+                                        {selectedProject.title}
+                                    </h3>
+
+                                    {/* Meta grid */}
+                                    <div className="grid grid-cols-2 gap-4 border-y border-neutral-100 py-4">
+                                        <div>
+                                            <span className="block text-[9px] font-bold text-slate-400 uppercase tracking-wider">Location</span>
+                                            <span className="text-sm font-semibold text-slate-800">{selectedProject.location}</span>
+                                        </div>
+                                        <div>
+                                            <span className="block text-[9px] font-bold text-slate-400 uppercase tracking-wider">Year</span>
+                                            <span className="text-sm font-semibold text-slate-800">{selectedProject.year}</span>
+                                        </div>
+                                    </div>
+
+                                    {/* Description */}
+                                    <div className="space-y-2">
+                                        <span className="block text-[9px] font-bold text-slate-400 uppercase tracking-wider">Project Scope</span>
+                                        <p className="text-slate-600 text-xs sm:text-sm leading-relaxed font-normal">
+                                            {selectedProject.description}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* Thumbnail indicator roll */}
+                                {gallery.length > 1 && (
+                                    <div className="pt-6 mt-6 border-t border-neutral-100">
+                                        <span className="block text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-2">Gallery Preview</span>
+                                        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-thin scrollbar-thumb-neutral-200">
+                                            {gallery.map((url: string, idx: number) => (
+                                                <button
+                                                    key={idx}
+                                                    onClick={() => setActiveImgIndex(idx)}
+                                                    className={`h-10 w-14 rounded-md overflow-hidden border shrink-0 transition cursor-pointer ${
+                                                        activeImgIndex === idx 
+                                                            ? "border-indigo-600 ring-2 ring-indigo-100" 
+                                                            : "border-neutral-200 hover:border-neutral-400"
+                                                    }`}
+                                                >
+                                                    <img src={url} className="h-full w-full object-cover" alt="thumb" />
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                );
+            })()}
 
         </div>
     );

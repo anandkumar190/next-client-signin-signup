@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
 
     try {
         const body = await request.json();
-        const { title, category, year, location, description, imageUrl, isActive } = body;
+        const { title, category, year, location, description, imageUrl, imageUrls, isActive } = body;
 
         if (!title || !category || !year || !location || !description || !imageUrl) {
             return NextResponse.json({ success: false, error: "Missing required fields." }, { status: 400 });
@@ -48,6 +48,7 @@ export async function POST(request: NextRequest) {
             location,
             description,
             imageUrl,
+            imageUrls: imageUrls || [],
             isActive: isActive ?? true
         });
 
@@ -66,7 +67,7 @@ export async function PUT(request: NextRequest) {
 
     try {
         const body = await request.json();
-        const { _id, title, category, year, location, description, imageUrl, isActive } = body;
+        const { _id, title, category, year, location, description, imageUrl, imageUrls, isActive } = body;
 
         if (!_id) {
             return NextResponse.json({ success: false, error: "Project ID (_id) is required." }, { status: 400 });
@@ -74,7 +75,7 @@ export async function PUT(request: NextRequest) {
 
         const project = await Project.findByIdAndUpdate(
             _id,
-            { title, category, year, location, description, imageUrl, isActive },
+            { title, category, year, location, description, imageUrl, imageUrls, isActive },
             { new: true }
         );
 
