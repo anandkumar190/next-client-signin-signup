@@ -10,7 +10,7 @@ export default function PortfolioManager() {
         _id: "",
         title: "",
         category: "Commercial",
-        year: new Date().getFullYear().toString(),
+        year: "2026",
         location: "",
         description: "",
         imageUrl: "",
@@ -29,11 +29,12 @@ export default function PortfolioManager() {
     const fetchProjects = () => {
         axios.get("/api/admin/projects")
             .then(res => {
-                setProjects(res.data.data);
+                setProjects(res.data?.data || []);
             })
             .catch(err => {
                 console.error("Failed to load projects:", err);
                 setMessage({ text: "Failed to load projects list.", type: "error" });
+                setProjects([]);
             })
             .finally(() => {
                 setLoading(false);
@@ -135,7 +136,7 @@ export default function PortfolioManager() {
             _id: "",
             title: "",
             category: "Commercial",
-            year: new Date().getFullYear().toString(),
+            year: "2026",
             location: "",
             description: "",
             imageUrl: "",
@@ -223,49 +224,52 @@ export default function PortfolioManager() {
                             </tr>
                         </thead>
                         <tbody>
-                            {projects.length === 0 ? (
+                            {!projects || !Array.isArray(projects) || projects.length === 0 ? (
                                 <tr>
                                     <td colSpan={6} className="px-6 py-10 text-center text-gray-400 font-medium">
                                         No projects available. Click "Add Project" above to create one.
                                     </td>
                                 </tr>
                             ) : (
-                                projects.map(proj => (
-                                    <tr key={proj._id} className="border-b border-gray-100 hover:bg-gray-50/40 transition">
-                                        <td className="px-6 py-3">
-                                            <div className="h-12 w-20 rounded bg-gray-50 border border-gray-200 overflow-hidden shrink-0 flex items-center justify-center">
-                                                {proj.imageUrl ? (
-                                                    <img 
-                                                        src={proj.imageUrl} 
-                                                        onError={(e) => handleImageError(e, proj.imageUrl)}
-                                                        className="h-full w-full object-cover" 
-                                                        alt={proj.title} 
-                                                    />
-                                                ) : (
-                                                    <span className="text-[10px] text-gray-400 font-bold uppercase">No Image</span>
-                                                )}
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4 font-semibold text-gray-800">{proj.title}</td>
-                                        <td className="px-6 py-4 text-xs font-bold uppercase tracking-wider">{proj.category}</td>
-                                        <td className="px-6 py-4">{proj.location}</td>
-                                        <td className="px-6 py-4 font-semibold">{proj.year}</td>
-                                        <td className="px-6 py-4 text-right space-x-3">
-                                            <button 
-                                                onClick={() => openEditModal(proj)}
-                                                className="text-gray-700 hover:text-gray-900 font-semibold text-xs transition cursor-pointer"
-                                            >
-                                                Edit
-                                            </button>
-                                            <button 
-                                                onClick={() => deleteProject(proj._id)}
-                                                className="text-red-500 hover:text-red-700 font-semibold text-xs transition cursor-pointer"
-                                            >
-                                                Delete
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))
+                                projects.map(proj => {
+                                    if (!proj) return null;
+                                    return (
+                                        <tr key={proj._id} className="border-b border-gray-100 hover:bg-gray-50/40 transition">
+                                            <td className="px-6 py-3">
+                                                <div className="h-12 w-20 rounded bg-gray-50 border border-gray-200 overflow-hidden shrink-0 flex items-center justify-center">
+                                                    {proj.imageUrl ? (
+                                                        <img 
+                                                            src={proj.imageUrl} 
+                                                            onError={(e) => handleImageError(e, proj.imageUrl)}
+                                                            className="h-full w-full object-cover" 
+                                                            alt={proj.title || "Project"} 
+                                                        />
+                                                    ) : (
+                                                        <span className="text-[10px] text-gray-400 font-bold uppercase">No Image</span>
+                                                    )}
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4 font-semibold text-gray-800">{proj.title || "Untitled"}</td>
+                                            <td className="px-6 py-4 text-xs font-bold uppercase tracking-wider">{proj.category || "General"}</td>
+                                            <td className="px-6 py-4">{proj.location || "N/A"}</td>
+                                            <td className="px-6 py-4 font-semibold">{proj.year || "2026"}</td>
+                                            <td className="px-6 py-4 text-right space-x-3">
+                                                <button 
+                                                    onClick={() => openEditModal(proj)}
+                                                    className="text-gray-700 hover:text-gray-900 font-semibold text-xs transition cursor-pointer"
+                                                >
+                                                    Edit
+                                                </button>
+                                                <button 
+                                                    onClick={() => deleteProject(proj._id)}
+                                                    className="text-red-500 hover:text-red-700 font-semibold text-xs transition cursor-pointer"
+                                                >
+                                                    Delete
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    );
+                                })
                             )}
                         </tbody>
                     </table>
