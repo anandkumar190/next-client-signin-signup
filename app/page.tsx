@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import axios from "axios";
+import { REMOTE_ASSET_BASE } from "@/helpers/config";
 
 export default function Home() {
     const [content, setContent] = useState<any>(null);
@@ -26,6 +27,13 @@ export default function Home() {
 
     const closeProjectDetails = () => {
         setSelectedProject(null);
+    };
+
+    const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>, url: string) => {
+        const target = e.currentTarget;
+        if (url && url.startsWith("/uploads/") && !target.src.includes(REMOTE_ASSET_BASE)) {
+            target.src = `${REMOTE_ASSET_BASE}${url}`;
+        }
     };
 
     const nextImage = (e: React.MouseEvent, max: number) => {
@@ -159,6 +167,7 @@ export default function Home() {
                 <div className="absolute inset-0 z-0">
                     <img 
                         src={hero.mediaUrl || "/assets/generated/hero-residence.dim_1920x1080.jpg"} 
+                        onError={(e) => handleImageError(e, hero.mediaUrl)}
                         className="h-full w-full object-cover opacity-35" 
                         alt="Hero Bg" 
                     />
@@ -291,6 +300,7 @@ export default function Home() {
                                                     ? proj.imageUrls[cardImageIndices[proj._id] || 0]
                                                     : proj.imageUrl
                                             } 
+                                            onError={(e) => handleImageError(e, proj.imageUrls && proj.imageUrls.length > 0 ? proj.imageUrls[cardImageIndices[proj._id] || 0] : proj.imageUrl)}
                                             className="h-full w-full object-cover group-hover:scale-102 transition duration-300 select-none" 
                                             alt={proj.title} 
                                         />
@@ -477,6 +487,7 @@ export default function Home() {
                             <div className="flex-1 bg-slate-950 relative flex items-center justify-center min-h-[40%] md:min-h-0">
                                 <img 
                                     src={activeUrl} 
+                                    onError={(e) => handleImageError(e, activeUrl)}
                                     className="max-h-full max-w-full object-contain select-none" 
                                     alt={`${selectedProject.title} Detail`} 
                                 />
@@ -562,7 +573,12 @@ export default function Home() {
                                                             : "border-neutral-200 hover:border-neutral-400"
                                                     }`}
                                                 >
-                                                    <img src={url} className="h-full w-full object-cover" alt="thumb" />
+                                                    <img 
+                                                        src={url} 
+                                                        onError={(e) => handleImageError(e, url)}
+                                                        className="h-full w-full object-cover" 
+                                                        alt="thumb" 
+                                                    />
                                                 </button>
                                             ))}
                                         </div>

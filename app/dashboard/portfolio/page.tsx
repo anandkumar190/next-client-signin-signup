@@ -1,6 +1,7 @@
 "use client"
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { REMOTE_ASSET_BASE } from "@/helpers/config";
 
 export default function PortfolioManager() {
     const [projects, setProjects] = useState<any[]>([]);
@@ -99,8 +100,8 @@ export default function PortfolioManager() {
 
     const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>, url: string) => {
         const target = e.currentTarget;
-        if (url && url.startsWith("/uploads/") && !target.src.includes("http://13.207.126.237")) {
-            target.src = `http://13.207.126.237${url}`;
+        if (url && url.startsWith("/uploads/") && !target.src.includes(REMOTE_ASSET_BASE)) {
+            target.src = `${REMOTE_ASSET_BASE}${url}`;
         }
     };
 
